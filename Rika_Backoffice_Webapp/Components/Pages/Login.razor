@@ -1,7 +1,17 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components.Forms
+@using System.Text.Json
+@using Rika_Backoffice_Webapp.Services
 @layout Layout.LoginLayout
+
+
+
+@inject HttpClient Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
+@* @inject JwtAuthenticationStateProvider AuthenticationStateProvider *@
+
 
 
 <PageTitle>Rika Admin Portal - Log in</PageTitle>
@@ -29,12 +39,12 @@
                     <label for="password" class="form-label">Password</label>
                     <ValidationMessage For="() => LoginInput.Password" class="text-danger" />
                 </div>
-                <div class="checkbox mb-3">
+@*                 <div class="checkbox mb-3">
                     <label class="form-label">
                         <InputCheckbox @bind-Value="LoginInput.RememberMe" class="darker-border-checkbox form-check-input" />
                         Remember me
                     </label>
-                </div>
+                </div> *@
                 <div>
                     <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
                 </div>
@@ -60,15 +70,46 @@
 
     [SupplyParameterFromForm]
     private LoginModel LoginInput { get; set; } = new();
-
     public async Task LoginUser()
     {
-        // var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-        // if (result.Succeeded)
-        // {
-        //     Logger.LogInformation("User logged in.");
-        //     RedirectManager.RedirectTo(ReturnUrl);
-        // }
+
+
+        var response = await Http.PostAsJsonAsync("https://rika-authenticationprovider-drfta9bhdaf0g0dr.westeurope-01.azurewebsites.net/api/Auth/signin", LoginInput);
+        if (response.IsSuccessStatusCode)
+        {
+
+            
+
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseContent);
+
+            if (tokenResponse != null)
+            {
+                string jwtToken = tokenResponse.Token;
+
+                // Sätta cookie
+                var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,  // För att skydda mot XSS-attacker
+                        Secure = true,    // Använd endast över HTTPS
+                        Expires = DateTimeOffset.UtcNow.AddDays(20) // Ställ in en utgångsdatum
+                    };
+
+                HttpContextAccessor.HttpContext?.Response.Cookies.Append("Identity-token", jwtToken, cookieOptions);
+
+                NavigationManager.NavigateTo("/");
+
+                // AuthenticationStateProvider.MarkUserAsAuthenticated(jwtToken);
+
+                // Logger.LogInformation("User logged in.");
+                // RedirectManager.RedirectTo(ReturnUrl);
+            }
+
+
+
+
+        }
         // else if (result.RequiresTwoFactor)
         // {
         //     RedirectManager.RedirectTo(
@@ -84,8 +125,6 @@
         // {
         //     errorMessage = "Error: Invalid login attempt.";
         // }
-
-        alertMessage = "You are now logged in";
     }
 
     private sealed class LoginModel
@@ -100,6 +139,12 @@
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+    }
+
+    public class TokenResponse
+    {
+        /* [JsonProperty("token")] */ // Justera beroende på om ditt API returnerar "token" eller ett annat namn
+        public string Token { get; set; } = string.Empty;
     }
 
 }
