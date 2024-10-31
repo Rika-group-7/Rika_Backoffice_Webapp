@@ -27,3 +27,91 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+/* Grundinställningar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+}
+
+/* Sidhuvud */
+header {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    width: 100%;
+}
+
+/* Sidomeny */
+.sidebar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding-top: 20px;
+    height: 100vh;
+}
+
+    .sidebar nav ul {
+        list-style-type: none;
+    }
+
+        .sidebar nav ul li {
+            padding: 15px;
+            text-align: center;
+        }
+
+            .sidebar nav ul li a {
+                color: white;
+                text-decoration: none;
+            }
+
+                .sidebar nav ul li a:hover {
+                    background-color: #575757;
+                    display: block;
+                }
+
+/* Huvudinnehåll */
+main {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 100%;
+}
+
+.section-card {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(33% - 40px);
+    text-align: center;
+}
+
+    .section-card h2 {
+        color: #333;
+    }
+
+    .section-card p {
+        color: #666;
+    }
+
+    .section-card button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+        .section-card button:hover {
+            background-color: #45a049;
+        }

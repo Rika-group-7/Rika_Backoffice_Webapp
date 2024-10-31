@@ -2,6 +2,67 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<!-- Header / Sidhuvud -->
+<header>
+    <h1>Välkommen till Backoffice</h1>
+    <p>Här kan du navigera till olika funktioner i systemet.</p>
+</header>
 
-Welcome to your new app.
+<!-- Navigationsmeny -->
+<aside class="sidebar">
+    <nav>
+        <ul>
+            <li><a href="#user-management">Användarhantering</a></li>
+            <li><a href="#order-management">Orderhantering</a></li>
+            <li><a href="#product-catalog">Produktkatalog</a></li>
+            <li><a href="#reports">Rapporter & Statistik</a></li>
+            <li><a href="#settings">Inställningar</a></li>
+            <li><a href="#support">Support & Hjälp</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Main Content / Huvudinnehåll -->
+<main>
+    <!-- Användarhantering -->
+    <section id="user-management" class="section-card">
+        <h2>Användarhantering</h2>
+        <p>Hantera användarkonton och behörigheter.</p>
+        <button onclick="navigateTo('user-management')">Gå till Användarhantering</button>
+    </section>
+
+    <!-- Orderhantering -->
+    <section id="order-management" class="section-card">
+        <h2>Orderhantering</h2>
+        <p>Hantera och spåra alla pågående ordrar.</p>
+        <button onclick="navigateTo('order-management')">Gå till Orderhantering</button>
+    </section>
+
+    <!-- Produktkatalog -->
+    <section id="product-catalog" class="section-card">
+        <h2>Produktkatalog</h2>
+        <p>Visa, lägg till och uppdatera produkter.</p>
+        <button onclick="navigateTo('product-catalog')">Gå till Produktkatalog</button>
+    </section>
+
+    <!-- Rapporter & Statistik -->
+    <section id="reports" class="section-card">
+        <h2>Rapporter & Statistik</h2>
+        <p>Visa affärsrapporter och statistik.</p>
+        <button onclick="navigateTo('reports')">Gå till Rapporter</button>
+    </section>
+
+    <!-- Inställningar -->
+    <section id="settings" class="section-card">
+        <h2>Inställningar</h2>
+        <p>Hantera system- och säkerhetsinställningar.</p>
+        <button onclick="navigateTo('settings')">Gå till Inställningar</button>
+    </section>
+
+    <!-- Support & Hjälp -->
+    <section id="support" class="section-card">
+        <h2>Support & Hjälp</h2>
+        <p>Få hjälp och support.</p>
+        <button onclick="navigateTo('support')">Gå till Support</button>
+    </section>
+</main>
