@@ -1,4 +1,7 @@
 ﻿@page "/products"
+@rendermode InteractiveServer
+
+<PageTitle>Products</PageTitle>
 
 <h3>Products Management</h3>
 <div>
@@ -14,8 +17,42 @@
     </div>
 </div>
 
+<div class="container card shadow-sm">
+    <DataGrid TItem="Product" Data="@Products" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10">
+        <DataGridColumns>
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Name)" Caption="Name" Sortable="true" />
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Description)" Caption="Description" Sortable="true" />
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Price)" Caption="Price" Sortable="true" />
+        </DataGridColumns>
+    </DataGrid>
+</div>
+
 
 
 @code {
+    public class Product
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public double Price { get; set; }
+    }
 
+    private List<Product> Products = new List<Product>();
+
+    protected override void OnInitialized()
+    {
+        var result = new List<Product>();
+        for (int i = 1; i <= 100; i++)
+        {
+            result.Add(new Product
+            {
+                Name = Faker.Commerce.ProductName(),
+                Description = Faker.Lorem.Sentence(),
+                Price = Faker.RandomNumber.Next(1, 1000)
+            });
+        }
+        Products = result;
+    }
 }
