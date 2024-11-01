@@ -18,7 +18,7 @@
 </div>
 
 <div class="container card shadow-sm">
-    <DataGrid TItem="Product" Data="@Products" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10">
+    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10">
         <DataGridColumns>
             <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
             <DataGridColumn TItem="Product" Field="@nameof(Product.Name)" Caption="Name" Sortable="true" />
@@ -39,7 +39,7 @@
         public double Price { get; set; }
     }
 
-    private List<Product> Products = new List<Product>();
+    private List<Product> ProductsList = new List<Product>();
 
     protected override void OnInitialized()
     {
@@ -48,11 +48,11 @@
         {
             result.Add(new Product
             {
-                Name = Faker.Commerce.ProductName(),
+                Name = Faker.Company.Name(),
                 Description = Faker.Lorem.Sentence(),
                 Price = Faker.RandomNumber.Next(1, 1000)
             });
         }
-        Products = result;
+        ProductsList = result;
     }
 }
