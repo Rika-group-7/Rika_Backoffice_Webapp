@@ -1,27 +1,19 @@
 ﻿@page "/usermanagement";
-<PageTitle>Rika Admin Portal | User Management</PageTitle>
-<div class="container">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">User ID</th>
-                <th scope="col">First name</th>
-                <th scope="col">Last name</th>
-                <th scope="col">Email address</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in Users.Take(20))
-            {
-                <tr>
-                    <td scope="row">@user.Id</td>
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                    <td>@user.Email</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+@rendermode InteractiveServer
+
+
+<PageTitle>User Management</PageTitle>
+
+<div class="container card shadow-sm">
+
+    <DataGrid TItem="User" Data="@Users" Sortable="true" Filterable="true" Responsive="true" ShowPager="true"  PageSize="10">
+        <DataGridColumns>
+            <DataGridColumn TItem="User" Field="@nameof(User.Id)" Caption="Id" Sortable="true" />
+            <DataGridColumn TItem="User" Field="@nameof(User.FirstName)" Caption="First Name" Sortable="true" />
+            <DataGridColumn TItem="User" Field="@nameof(User.LastName)" Caption="Last Name" Sortable="true" />
+            <DataGridColumn TItem="User" Field="@nameof(User.Email)" Caption="Email" Sortable="true" />
+        </DataGridColumns>
+    </DataGrid>
 </div>
 
 @code {
@@ -31,36 +23,25 @@
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Email { get; set; } = null!;
-
     }
+
     private List<User> Users = new List<User>();
+
+
     protected override void OnInitialized()
     {
-        Users.Add(new User
+        var result = new List<User>();
+        for (int i = 1; i <= 100; i++)
         {
-            FirstName = "John",
-            LastName = "Doe",
-            Email = "john.doe@example.com"
+            result.Add(new User
+            {
+                FirstName = Faker.Name.First(),
+                LastName = Faker.Name.Last(),
+                Email = Faker.Internet.Email()
+            });
+        }
+        Users = result;
 
-        });
-        Users.Add(new User
-        {
-            FirstName = "Jane",
-            LastName = "Doe",
-            Email = "jane.doe@example.com"
-
-        });
-        Users.Add(new User
-        {
-            FirstName = "Alice",
-            LastName = "Doe",
-            Email = "alice.doe@example.com"
-        });
-        Users.Add(new User
-        {
-            FirstName = "Hugo",
-            LastName = "Doe",
-            Email = "hugo.doe@example.com"
-        });
     }
+
 }
