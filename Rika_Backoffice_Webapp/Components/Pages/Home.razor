@@ -1,5 +1,10 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Components.Authorization
+@using System.Net.Http.Headers
+
+@inject HttpClient Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
 
@@ -8,8 +13,8 @@
 Welcome to your new app.
 
 
-@*  <AuthorizeView>
+ <AuthorizeView>
     <Authorized>
         <button>Hemlig knapp här!</button>
     </Authorized>
-</AuthorizeView> *@
+</AuthorizeView>

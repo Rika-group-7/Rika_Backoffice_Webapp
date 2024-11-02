@@ -10,14 +10,13 @@ builder.Services.AddRazorComponents()
 
 
 
-
-
-
-
-
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<JwtAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<JwtAuthenticationStateProvider>());
+builder.Services.AddHttpContextAccessor();
+
 
 
 var app = builder.Build();

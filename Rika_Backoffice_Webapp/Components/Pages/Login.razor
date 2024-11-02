@@ -10,7 +10,7 @@
 @inject HttpClient Http
 @inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager NavigationManager
-@* @inject JwtAuthenticationStateProvider AuthenticationStateProvider *@
+@inject JwtAuthenticationStateProvider AuthenticationStateProvider
 
 
 
@@ -70,62 +70,49 @@
 
     [SupplyParameterFromForm]
     private LoginModel LoginInput { get; set; } = new();
+    private string jwtToken;
+
+
     public async Task LoginUser()
     {
-
-
         var response = await Http.PostAsJsonAsync("https://rika-authenticationprovider-drfta9bhdaf0g0dr.westeurope-01.azurewebsites.net/api/Auth/signin", LoginInput);
         if (response.IsSuccessStatusCode)
         {
+            var tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            jwtToken = tokenResponse.Token;
+            Console.WriteLine(jwtToken);
 
-            
-
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseContent);
-
-            if (tokenResponse != null)
+            if (!string.IsNullOrEmpty(jwtToken))
             {
-                string jwtToken = tokenResponse.Token;
+                var claims = AuthenticationStateProvider.ParseClaimsFromJwt(jwtToken); //Hämtar claims från jwttoken
+                var isAdminClaim = claims.FirstOrDefault(c => c.Type == "isAdmin"); //Söker efter isAdmin
 
-                // Sätta cookie
-                var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,  // För att skydda mot XSS-attacker
-                        Secure = true,    // Använd endast över HTTPS
-                        Expires = DateTimeOffset.UtcNow.AddDays(20) // Ställ in en utgångsdatum
-                    };
+                if (isAdminClaim != null && bool.TryParse(isAdminClaim.Value, out bool isAdmin) && isAdmin) //Om den hittar is Admin
+                {
+                    AuthenticationStateProvider.MarkUserAsAuthenticated(jwtToken); //Markerar som authentiserad
 
-                HttpContextAccessor.HttpContext?.Response.Cookies.Append("Identity-token", jwtToken, cookieOptions);
+                    var cookieOptions = new CookieOptions //token skapas
+                        {
+                            HttpOnly = true,
+                            Secure = true,
+                            Expires = DateTimeOffset.UtcNow.AddDays(20)
+                        };
 
-                NavigationManager.NavigateTo("/");
-
-                // AuthenticationStateProvider.MarkUserAsAuthenticated(jwtToken);
-
-                // Logger.LogInformation("User logged in.");
-                // RedirectManager.RedirectTo(ReturnUrl);
+                    HttpContextAccessor.HttpContext?.Response.Cookies.Append("Identity-token", jwtToken, cookieOptions); //Lägger till cookie i webbläsare(?)
+                    NavigationManager.NavigateTo("/"); 
+                }
+                else
+                {
+                    alertMessage = "Access denied. Admin privileges required.";
+                }
             }
-
-
-
-
         }
-        // else if (result.RequiresTwoFactor)
-        // {
-        //     RedirectManager.RedirectTo(
-        //         "Account/LoginWith2fa",
-        //         new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
-        // }
-        // else if (result.IsLockedOut)
-        // {
-        //     Logger.LogWarning("User account locked out.");
-        //     RedirectManager.RedirectTo("Account/Lockout");
-        // }
-        // else
-        // {
-        //     errorMessage = "Error: Invalid login attempt.";
-        // }
+        else
+        {
+            alertMessage = "Login failed. User does not exist.";
+        }
     }
+
 
     private sealed class LoginModel
     {
@@ -143,8 +130,31 @@
 
     public class TokenResponse
     {
-        /* [JsonProperty("token")] */ // Justera beroende på om ditt API returnerar "token" eller ett annat namn
-        public string Token { get; set; } = string.Empty;
+        
+        public string Token { get; set; } 
+    }
+
+    public async Task AuthorizedEndpointWithToken(string jwtToken)
+    {
+        // Skapa en ny HttpRequestMessage för GET-förfrågan
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://rika-authenticationprovider-drfta9bhdaf0g0dr.westeurope-01.azurewebsites.net/api/Auth/test");
+
+        // Lägg till JWT-token i Authorization-headern
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken);
+
+        // Skicka förfrågan och få svar
+        var response = await Http.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            //alertMessage = "Authorization successful!";
+            Console.WriteLine("auth successfull!");
+        }
+        else
+        {
+            //alertMessage = "Authorization failed. Please check your token.";
+            Console.WriteLine("auth failed!");
+        }
     }
 
 }
