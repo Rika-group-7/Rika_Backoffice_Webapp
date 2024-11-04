@@ -5,7 +5,7 @@ using Rika_Backoffice_Webapp.Models;
 
 namespace Rika_Backoffice_Webapp.Services;
 
-public class GraphQLService
+public class ProductService
 {
     private readonly GraphQLHttpClient _graphqlClient =
     new GraphQLHttpClient("https://productprovider-rika.azurewebsites.net/api/graphql?code=Da4aZa9Xnh8jmwu-Srgxk8wI7NpUBsKbMxQa9hoS0kp9AzFueYwEOg%3D%3D", new NewtonsoftJsonSerializer());
@@ -14,31 +14,9 @@ public class GraphQLService
     //GET ALL PRODUCTS
     private readonly GraphQLRequest _getProducts = new GraphQLRequest
     {
-        Query = @"
-            query getProducts {
-                id
-                title
-                brand
-                size
-                color
-                price
-                description
-                stockStatus
-                sku
-                ratings
-                productImage
-                categories {
-                    categoryName
-                    subCategories {
-                        categoryName
-                    }
-                }
-                materials {
-                    materialName
-                }
-            }
-        ",
-        OperationName = "GetProducts"
+        Query = @"{getProducts { id title brand size color price description stockStatus sku ratings productImage categories { categoryName subCategories { categoryName } } materials { materialName } }}"
+
+        //Query = "query { getProducts { id title brand size color price description stockStatus sku ratings productImage categories { categoryName subCategories { categoryName } } materials { materialName } } }"
     };
 
     private readonly GraphQLRequest _getProductById = new GraphQLRequest
@@ -77,6 +55,13 @@ public class GraphQLService
         var fetch = await _graphqlClient.SendQueryAsync<GetAllProductsRequest>(_getProducts);
 
         return fetch;
+    }
+
+    public async Task<IEnumerable<Product>> GetProductsAsync()
+    {
+        var fetch = await _graphqlClient.SendQueryAsync<GetAllProductsRequest>(_getProducts);
+
+        return fetch?.Data?.Products?.AsEnumerable() ?? Enumerable.Empty<Product>();
     }
 
     //CREATE PRODUCT

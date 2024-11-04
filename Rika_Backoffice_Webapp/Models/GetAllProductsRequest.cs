@@ -2,5 +2,5 @@
 
 public class GetAllProductsRequest
 {
-    public List<Product> Products { get; set; } = null!;
+    public IEnumerable<Product> Products { get; set; } = null!;
 }

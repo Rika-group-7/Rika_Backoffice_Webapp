@@ -1,5 +1,9 @@
 ﻿@page "/products"
+@using Blazorise.DataGrid
+@using Rika_Backoffice_Webapp.Models
+@using Rika_Backoffice_Webapp.Services
 @rendermode InteractiveServer
+@inject ProductService _productService
 
 <PageTitle>Products</PageTitle>
 
@@ -21,7 +25,7 @@
     <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10">
         <DataGridColumns>
             <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
-            <DataGridColumn TItem="Product" Field="@nameof(Product.Name)" Caption="Name" Sortable="true" />
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Title)" Caption="Name" Sortable="true" />
             <DataGridColumn TItem="Product" Field="@nameof(Product.Description)" Caption="Description" Sortable="true" />
             <DataGridColumn TItem="Product" Field="@nameof(Product.Price)" Caption="Price" Sortable="true" />
         </DataGridColumns>
@@ -31,28 +35,49 @@
 
 
 @code {
-    public class Product
+    // public class Product
+    // {
+    //     public Guid Id { get; set; } = Guid.NewGuid();
+    //     public string Name { get; set; } = null!;
+    //     public string Description { get; set; } = null!;
+    //     public double Price { get; set; }
+    // }
+
+    // private List<Product> ProductsList = new List<Product>();
+
+    private IEnumerable<Product> ProductsList = Enumerable.Empty<Product>();
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var result = new List<Product>();
+    //     for (int i = 1; i <= 100; i++)
+    //     {
+    //         result.Add(new Product
+    //         {
+    //             Name = Faker.Company.Name(),
+    //             Description = Faker.Lorem.Sentence(),
+    //             Price = Faker.RandomNumber.Next(1, 1000)
+    //         });
+    //     }
+    //     ProductsList = result;
+
+
+    // }
+
+    // private GraphQL.GraphQLResponse<GetAllProductsRequest>? ProductsData;
+
+    private async Task FetchProducts()
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
-        public double Price { get; set; }
+        ProductsList = await _productService.GetProductsAsync();
+        // if (ProductsData != null)
+        // {
+        //     ProductsList = ProductsData.AsEnumerable();
+        // }
     }
 
-    private List<Product> ProductsList = new List<Product>();
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var result = new List<Product>();
-        for (int i = 1; i <= 100; i++)
-        {
-            result.Add(new Product
-            {
-                Name = Faker.Company.Name(),
-                Description = Faker.Lorem.Sentence(),
-                Price = Faker.RandomNumber.Next(1, 1000)
-            });
-        }
-        ProductsList = result;
+        await FetchProducts();
     }
+
 }
