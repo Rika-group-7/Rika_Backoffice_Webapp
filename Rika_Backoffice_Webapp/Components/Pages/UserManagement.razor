@@ -1,47 +1,43 @@
 ﻿@page "/usermanagement";
+@using Rika_Backoffice_Webapp.Models
+@using Rika_Backoffice_Webapp.Services
 @rendermode InteractiveServer
-
+@inject UserService _userService
+@inject NavigationManager _navigationManager
 
 <PageTitle>User Management</PageTitle>
 
 <div class="container card shadow-sm">
 
-    <DataGrid TItem="User" Data="@Users" Sortable="true" Filterable="true" Responsive="true" ShowPager="true"  PageSize="10">
+    <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked">
         <DataGridColumns>
-            <DataGridColumn TItem="User" Field="@nameof(User.Id)" Caption="Id" Sortable="true" />
-            <DataGridColumn TItem="User" Field="@nameof(User.FirstName)" Caption="First Name" Sortable="true" />
-            <DataGridColumn TItem="User" Field="@nameof(User.LastName)" Caption="Last Name" Sortable="true" />
-            <DataGridColumn TItem="User" Field="@nameof(User.Email)" Caption="Email" Sortable="true" />
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Id)" Caption="Id" Sortable="true" />
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.FirstName)" Caption="First Name" Sortable="true" />
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.LastName)" Caption="Last Name" Sortable="true" />
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Email)" Caption="Email" Sortable="true" />
+
         </DataGridColumns>
     </DataGrid>
+
 </div>
 
 @code {
-    public class User
+
+
+    private List<UserModel> Users = new List<UserModel>();
+    [Parameter]
+    public string UserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string Email { get; set; } = null!;
-    }
-
-    private List<User> Users = new List<User>();
-
-
-    protected override void OnInitialized()
-    {
-        var result = new List<User>();
-        for (int i = 1; i <= 100; i++)
-        {
-            result.Add(new User
-            {
-                FirstName = Faker.Name.First(),
-                LastName = Faker.Name.Last(),
-                Email = Faker.Internet.Email()
-            });
-        }
-        Users = result;
+        Users = await _userService.GetAllUserAsync();
 
     }
+    private void RowClicked(DataGridRowMouseEventArgs<UserModel> e)
+    {
+        var userId = e.Item.Id;
+        _navigationManager.NavigateTo($"/user/{userId}");
+    }
+
 
 }
