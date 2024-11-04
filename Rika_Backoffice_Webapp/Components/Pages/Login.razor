@@ -134,7 +134,7 @@
         public string Token { get; set; } 
     }
 
-    public async Task AuthorizedEndpointWithToken(string jwtToken)
+    public async Task AuthorizedEndpointWithToken(string jwtToken) //Denna funktion används ej!
     {
         // Skapa en ny HttpRequestMessage för GET-förfrågan
         var request = new HttpRequestMessage(HttpMethod.Get, "https://rika-authenticationprovider-drfta9bhdaf0g0dr.westeurope-01.azurewebsites.net/api/Auth/test");
