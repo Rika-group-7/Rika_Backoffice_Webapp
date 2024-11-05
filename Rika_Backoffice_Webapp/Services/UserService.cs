@@ -1,4 +1,5 @@
 ﻿using Rika_Backoffice_Webapp.Models;
+using System.Net.Http.Json;
 namespace Rika_Backoffice_Webapp.Services;
 
 
@@ -65,6 +66,23 @@ public class UserService
             return new UserModel();
         }
 
+    }
+
+    public async Task<bool> DeleteUserAsync(string userId)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync(apiUrl + $"deletebyid/{userId}");
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        return false;
     }
 
 }

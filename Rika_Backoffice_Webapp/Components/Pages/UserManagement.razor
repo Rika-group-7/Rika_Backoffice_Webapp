@@ -5,11 +5,11 @@
 @inject UserService _userService
 @inject NavigationManager _navigationManager
 
-<PageTitle>User Management</PageTitle>
+<PageTitle>User Management </PageTitle>
 
 <div class="container card shadow-sm">
 
-    <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked">
+    <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
         <DataGridColumns>
             <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Id)" Caption="Id" Sortable="true" />
             <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.FirstName)" Caption="First Name" Sortable="true" />
@@ -25,8 +25,7 @@
 
 
     private List<UserModel> Users = new List<UserModel>();
-    [Parameter]
-    public string UserId { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,6 +36,11 @@
     {
         var userId = e.Item.Id;
         _navigationManager.NavigateTo($"/user/{userId}");
+    }
+
+    private Cursor HoverCursor(UserModel user)
+    {
+        return Blazorise.Cursor.Pointer;
     }
 
 

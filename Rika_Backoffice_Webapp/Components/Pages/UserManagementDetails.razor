@@ -1,6 +1,8 @@
 ﻿@page "/user/{UserId}"
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
+@rendermode InteractiveServer
+
 @inject UserService _userService
 
 <div class="container mt-5">
@@ -26,7 +28,9 @@
         </div>
         <div class="text-right mt-3">
             <button class="btn btn-primary" @onclick="UpdateEmail">Save Changes</button>
+            <button class="btn btn-danger" @onclick="DeleteUser">Delete User</button>
         </div>
+
     </div>
 </div>
 
@@ -56,5 +60,11 @@
         }
     }
 
-
+    private async Task DeleteUser()
+    {
+        if(UserId != null)
+        {
+            await _userService.DeleteUserAsync(UserId);
+        }
+    }
 }
