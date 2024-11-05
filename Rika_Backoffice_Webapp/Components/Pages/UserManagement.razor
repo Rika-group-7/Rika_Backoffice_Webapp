@@ -1,0 +1,49 @@
+﻿@page "/usermanagement";
+@using Rika_Backoffice_Webapp.Models
+@using Rika_Backoffice_Webapp.Services
+@rendermode InteractiveServer
+@inject UserService _userService
+@inject NavigationManager _navigationManager
+@using Blazorise
+@using Blazorise.DataGrid
+
+<PageTitle>User Management </PageTitle>
+
+<div class="container card shadow-sm">
+
+    <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
+        <DataGridColumns>
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Id)" Caption="Id" Sortable="true" />
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.FirstName)" Caption="First Name" Sortable="true" />
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.LastName)" Caption="Last Name" Sortable="true" />
+            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Email)" Caption="Email" Sortable="true" />
+
+        </DataGridColumns>
+    </DataGrid>
+
+</div>
+
+@code {
+
+
+    private List<UserModel> Users = new List<UserModel>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await _userService.GetAllUserAsync();
+
+    }
+    private void RowClicked(DataGridRowMouseEventArgs<UserModel> e)
+    {
+        var userId = e.Item.Id;
+        _navigationManager.NavigateTo($"/user/{userId}");
+    }
+
+    private Cursor HoverCursor(UserModel user)
+    {
+        return Blazorise.Cursor.Pointer;
+    }
+
+
+}

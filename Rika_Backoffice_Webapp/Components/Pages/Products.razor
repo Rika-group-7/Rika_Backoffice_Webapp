@@ -1,0 +1,84 @@
+﻿@page "/products"
+@using Blazorise
+@using Blazorise.DataGrid
+@using Rika_Backoffice_Webapp.Models
+@using Rika_Backoffice_Webapp.Services
+@rendermode InteractiveServer
+@inject ProductService _productService
+
+<PageTitle>Products</PageTitle>
+
+<h3>Products Management</h3>
+<div>
+    <div class="products-title">
+        <h5>Please select one option</h5>
+    </div>
+    <div class="products-buttons">
+        <a href="/products/create" class="btn">Create new product</a>
+        <a href="/products/update" class="btn">Update product</a>
+        <a href="/products/getone" class="btn">Find one product</a>
+        <a href="/products/getall" class="btn">Find all products</a>
+        <a href="/products/delete" class="btn">Delete one product</a>
+    </div>
+</div>
+
+<div class="container card shadow-sm">
+    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10">
+        <DataGridColumns>
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Title)" Caption="Name" Sortable="true" />
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Description)" Caption="Description" Sortable="true" />
+            <DataGridColumn TItem="Product" Field="@nameof(Product.Price)" Caption="Price" Sortable="true" />
+        </DataGridColumns>
+    </DataGrid>
+</div>
+
+
+
+@code {
+    // public class Product
+    // {
+    //     public Guid Id { get; set; } = Guid.NewGuid();
+    //     public string Name { get; set; } = null!;
+    //     public string Description { get; set; } = null!;
+    //     public double Price { get; set; }
+    // }
+
+    // private List<Product> ProductsList = new List<Product>();
+
+    private IEnumerable<Product> ProductsList = Enumerable.Empty<Product>();
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var result = new List<Product>();
+    //     for (int i = 1; i <= 100; i++)
+    //     {
+    //         result.Add(new Product
+    //         {
+    //             Name = Faker.Company.Name(),
+    //             Description = Faker.Lorem.Sentence(),
+    //             Price = Faker.RandomNumber.Next(1, 1000)
+    //         });
+    //     }
+    //     ProductsList = result;
+
+
+    // }
+
+    // private GraphQL.GraphQLResponse<GetAllProductsRequest>? ProductsData;
+
+    private async Task FetchProducts()
+    {
+        ProductsList = await _productService.GetProductsAsync();
+        // if (ProductsData != null)
+        // {
+        //     ProductsList = ProductsData.AsEnumerable();
+        // }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchProducts();
+    }
+
+}
