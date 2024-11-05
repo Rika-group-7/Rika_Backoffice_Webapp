@@ -15,10 +15,10 @@ builder.Services
         options.Immediate = true;
     })
     .AddBootstrapProviders()
-    .AddFontAwesomeIcons();
-
-builder.Services.AddScoped<UserService>();
-builder.Services.AddHttpClient();
+    .AddFontAwesomeIcons()
+    .AddScoped<UserService>()
+    .Services.AddHttpClient()
+    .AddSingleton<ProductService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
