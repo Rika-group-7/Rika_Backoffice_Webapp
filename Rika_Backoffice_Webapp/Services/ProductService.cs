@@ -2,6 +2,7 @@
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Rika_Backoffice_Webapp.Models;
+using System.Diagnostics;
 
 namespace Rika_Backoffice_Webapp.Services;
 
@@ -14,9 +15,7 @@ public class ProductService
     //GET ALL PRODUCTS
     private readonly GraphQLRequest _getProducts = new GraphQLRequest
     {
-        Query = @"{getProducts { id title brand size color price description stockStatus sku ratings productImage categories { categoryName subCategories { categoryName } } materials { materialName } }}"
-
-        //Query = "query { getProducts { id title brand size color price description stockStatus sku ratings productImage categories { categoryName subCategories { categoryName } } materials { materialName } } }"
+        Query = "query { getProducts { id title brand size color price description stockStatus sku ratings productImage categories { categoryName subCategories { categoryName } } materials { materialName } } }"
     };
 
     private readonly GraphQLRequest _getProductById = new GraphQLRequest
@@ -53,7 +52,7 @@ public class ProductService
     public async Task<GraphQLResponse<GetAllProductsRequest>> GetProducts()
     {
         var fetch = await _graphqlClient.SendQueryAsync<GetAllProductsRequest>(_getProducts);
-
+        
         return fetch;
     }
 
