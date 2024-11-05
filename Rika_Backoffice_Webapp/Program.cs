@@ -23,6 +23,7 @@ builder.Services
 builder.Services.AddScoped<JwtAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<JwtAuthenticationStateProvider>());
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<NotificationService>();
 
 var app = builder.Build();
 

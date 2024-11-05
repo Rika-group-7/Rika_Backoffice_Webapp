@@ -1,13 +1,17 @@
 ﻿@page "/user/{UserId}"
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
+@inject NavigationManager navigationManager
 @rendermode InteractiveServer
+@inject NotificationService NotificationService
+
 
 @inject UserService _userService
 
 <div class="container mt-5">
     <h2 class="mb-4">User Profile</h2>
     <div class="card p-4">
+        <AlertPopup Message="@alertMessage" />
         <div class="form-group row">
             <label class="col-sm-3 col-form-label ">First Name:</label>
             <div class="col-sm-9">
@@ -29,6 +33,7 @@
         <div class="text-right mt-3">
             <button class="btn btn-primary" @onclick="UpdateEmail">Save Changes</button>
             <button class="btn btn-danger" @onclick="DeleteUser">Delete User</button>
+            
         </div>
     </div>
 </div>
@@ -42,6 +47,7 @@
     public string? UserId { get; set; }
     private UserModel user = new UserModel();
 
+    public string? alertMessage;
     protected override async Task OnInitializedAsync()
     {
         if(UserId != null)
@@ -56,6 +62,11 @@
         if (UserId != null)
         {
             await _userService.UpdateUserAsync(UserId, user);
+            NotificationService.Message = "User was updated";
+            navigationManager.NavigateTo("/usermanagement" );
+        }
+        else{
+            alertMessage = "User not found";
         }
     }
 
@@ -64,6 +75,12 @@
         if(UserId != null)
         {
             await _userService.DeleteUserAsync(UserId);
+            navigationManager.GetUriWithQueryParameter("/usermanagement", alertMessage);
+
+        }
+        else
+        {
+            alertMessage = "User not found";
         }
     }
 }
