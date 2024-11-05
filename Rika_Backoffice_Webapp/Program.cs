@@ -17,7 +17,7 @@ builder.Services
     .AddBootstrapProviders()
     .AddFontAwesomeIcons()
     .AddScoped<UserService>()
-    .Services.AddHttpClient()
+    .AddHttpClient()
     .AddSingleton<ProductService>();
 var app = builder.Build();
 
