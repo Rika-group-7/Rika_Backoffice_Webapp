@@ -1,7 +1,13 @@
-﻿function navigateTo(sectionId) {
+﻿
+function navigateTo(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
         section.scrollIntoView({ behavior: "smooth" });
-        alert(`Navigerar till: ${section.querySelector("h2").innerText}`);
     }
+}
+
+
+function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('open');
 }

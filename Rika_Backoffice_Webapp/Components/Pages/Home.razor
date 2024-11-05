@@ -1,68 +1,38 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<!-- Header / Sidhuvud -->
+<div class="container">
 <header>
-    <h1>Välkommen till Backoffice</h1>
-    <p>Här kan du navigera till olika funktioner i systemet.</p>
+    <h1>Backoffice</h1>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 </header>
 
-<!-- Navigationsmeny -->
-<aside class="sidebar">
+
+<aside class="sidebar" id="sidebar">
     <nav>
         <ul>
-            <li><a href="#user-management">Användarhantering</a></li>
-            <li><a href="#order-management">Orderhantering</a></li>
-            <li><a href="#product-catalog">Produktkatalog</a></li>
-            <li><a href="#reports">Rapporter & Statistik</a></li>
-            <li><a href="#settings">Inställningar</a></li>
-            <li><a href="#support">Support & Hjälp</a></li>
+            <li><a href="#user-management"><i class="fas fa-users"></i> Användarhantering</a></li>
+            <li><a href="#order-management"><i class="fas fa-box"></i> Orderhantering</a></li>
+            <li><a href="#product-catalog"><i class="fas fa-box-open"></i> Produktkatalog</a></li>
+            <li><a href="#reports"><i class="fas fa-chart-line"></i> Rapporter & Statistik</a></li>
+            <li><a href="#settings"><i class="fas fa-cogs"></i> Inställningar</a></li>
+            <li><a href="#support"><i class="fas fa-life-ring"></i> Support & Hjälp</a></li>
         </ul>
     </nav>
 </aside>
 
-<!-- Main Content / Huvudinnehåll -->
+
 <main>
-    <!-- Användarhantering -->
+    
     <section id="user-management" class="section-card">
         <h2>Användarhantering</h2>
         <p>Hantera användarkonton och behörigheter.</p>
         <button onclick="navigateTo('user-management')">Gå till Användarhantering</button>
     </section>
 
-    <!-- Orderhantering -->
-    <section id="order-management" class="section-card">
-        <h2>Orderhantering</h2>
-        <p>Hantera och spåra alla pågående ordrar.</p>
-        <button onclick="navigateTo('order-management')">Gå till Orderhantering</button>
-    </section>
+    
 
-    <!-- Produktkatalog -->
-    <section id="product-catalog" class="section-card">
-        <h2>Produktkatalog</h2>
-        <p>Visa, lägg till och uppdatera produkter.</p>
-        <button onclick="navigateTo('product-catalog')">Gå till Produktkatalog</button>
-    </section>
-
-    <!-- Rapporter & Statistik -->
-    <section id="reports" class="section-card">
-        <h2>Rapporter & Statistik</h2>
-        <p>Visa affärsrapporter och statistik.</p>
-        <button onclick="navigateTo('reports')">Gå till Rapporter</button>
-    </section>
-
-    <!-- Inställningar -->
-    <section id="settings" class="section-card">
-        <h2>Inställningar</h2>
-        <p>Hantera system- och säkerhetsinställningar.</p>
-        <button onclick="navigateTo('settings')">Gå till Inställningar</button>
-    </section>
-
-    <!-- Support & Hjälp -->
-    <section id="support" class="section-card">
-        <h2>Support & Hjälp</h2>
-        <p>Få hjälp och support.</p>
-        <button onclick="navigateTo('support')">Gå till Support</button>
-    </section>
 </main>
+</div>
