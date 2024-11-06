@@ -1,0 +1,93 @@
+﻿@page "/products/create"
+@rendermode InteractiveServer
+@using Rika_Backoffice_Webapp.Models
+
+
+<h3>Create Product</h3>
+
+<EditForm Model="ProductCreateInput">
+
+    <div class"create-form-title">
+        <h4>Product</h4>
+    </div>
+
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.Title" class="form-control"  placeholder="Product title" />
+        <label class="form-label">Title</label>
+        <ValidationMessage For="() => ProductCreateInput.Title" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.Brand" class="form-control" placeholder="Product brand" />
+        <label class="form-label">Brand</label>
+        <ValidationMessage For="() => ProductCreateInput.Brand" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.Size" class="form-control" placeholder="Product size" />
+        <label class="form-label">Size</label>
+        <ValidationMessage For="() => ProductCreateInput.Size" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.Color" class="form-control" placeholder="Product color" />
+        <label class="form-label">Color</label>
+        <ValidationMessage For="() => ProductCreateInput.Color" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputNumber @bind-Value="ProductCreateInput.Price" class="form-control" placeholder="Product price" />
+        <label class="form-label">Price</label>
+        <ValidationMessage For="() => ProductCreateInput.Price" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.Description" class="form-control" placeholder="Product description" />
+        <label class="form-label">Description</label>
+        <ValidationMessage For="() => ProductCreateInput.Description" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputCheckbox @bind-Value="ProductCreateInput.StockStatus" class="form-control-check"  />
+        <label class="form-label">In stock?</label>
+        <ValidationMessage For="() => ProductCreateInput.StockStatus" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.SKU" class="form-control" placeholder="Product SKU" />
+        <label class="form-label">SKU</label>
+        <ValidationMessage For="() => ProductCreateInput.SKU" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputNumber @bind-Value="ProductCreateInput.Ratings" class="form-control" placeholder="Product rating" />
+        <label class="form-label">Product rating</label>
+        <ValidationMessage For="() => ProductCreateInput.Ratings" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.ProductImage" class="form-control" placeholder="Product image" />
+        <label class="form-label">Image</label>
+        <ValidationMessage For="() => ProductCreateInput.ProductImage" class="text-danger" />
+    </div>
+    @foreach (var category in ProductCreateInput.Categories)
+    {
+        <div class="form-floating mb-3">
+            <InputText @bind-Value="category.CategoryName" class="form-control" placeholder="Product category" />
+            <label class="form-label">Category</label>
+            <ValidationMessage For="() => category.CategoryName" class="text-danger" />
+        </div>
+    }
+    <button type="button" class="btn btn-primary" @onclick="AddCategory">Add Category</button>
+    
+    
+
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductCreateInput.Brand" class="form-control" placeholder="Product brand" />
+        <label class="form-label">Brand</label>
+        <ValidationMessage For="() => ProductCreateInput.Brand" class="text-danger" />
+    </div>
+    
+
+</EditForm>
+
+@code {
+    
+    private ProductCreateRequest ProductCreateInput = new ProductCreateRequest { Categories = new List<ProductCreateRequest.CategoryCreateRequest>() };
+
+    private void AddCategory()
+    {
+        ProductCreateInput.Categories.Add(new ProductCreateRequest.CategoryCreateRequest());
+    }
+}
