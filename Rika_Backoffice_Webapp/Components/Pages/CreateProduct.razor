@@ -1,6 +1,10 @@
 ﻿@page "/products/create"
 @rendermode InteractiveServer
 @using Rika_Backoffice_Webapp.Models
+@using Rika_Backoffice_Webapp.Services
+@using System.Diagnostics
+
+@inject Rika_Backoffice_Webapp.Services.ProductService ProductService
 
 
 <h3>Create Product</h3>
@@ -127,8 +131,8 @@
         StateHasChanged();
     }
 
-    private void SubmitCreateProduct()
+    private async Task SubmitCreateProduct()
     {
-        alertMessage = "Create product submitted.";
+        var response = await ProductService.CreateProduct(ProductCreateInput);
     }
 }

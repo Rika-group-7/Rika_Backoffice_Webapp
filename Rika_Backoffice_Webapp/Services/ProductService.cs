@@ -64,7 +64,7 @@ public class ProductService
     }
 
     //CREATE PRODUCT
-    public async Task CreateProduct(ProductCreateRequest input)
+    public async Task<GraphQLResponse<CreateProductResponseModel>> CreateProduct(ProductCreateRequest input)
     {
         var createProductMutation = new GraphQLRequest
         {
@@ -94,13 +94,12 @@ public class ProductService
                     }
                 }
             }",
-            OperationName = "CreateProduct",
             Variables = new
             {
                 input
             }
         };
-        await _graphqlClient.SendMutationAsync<ProductCreateRequest>(createProductMutation);
+        return await _graphqlClient.SendMutationAsync<CreateProductResponseModel>(createProductMutation);
     }
 
     public async Task<GraphQLResponse<Product>> GetProductById(string id)

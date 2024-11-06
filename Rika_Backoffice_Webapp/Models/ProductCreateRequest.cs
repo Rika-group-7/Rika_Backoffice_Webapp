@@ -1,4 +1,6 @@
-﻿namespace Rika_Backoffice_Webapp.Models;
+﻿using Newtonsoft.Json;
+
+namespace Rika_Backoffice_Webapp.Models;
 
 public class ProductCreateRequest
 {
