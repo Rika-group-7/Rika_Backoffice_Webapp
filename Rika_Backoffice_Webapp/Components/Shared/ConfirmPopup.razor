@@ -1,0 +1,47 @@
+﻿@rendermode InteractiveServer
+@using Blazorise
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Are You Sure?</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            Warning: This action will permanently delete the user and cannot be undone. Press DELETE to proceed.
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@CloseModal">Cancel</Button>
+            <Button Color="Color.Danger" Clicked="@ConfirmAction">DELETE</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+
+    private Modal modalRef;
+    [Parameter]
+    public EventCallback OnConfirm { get; set; }
+
+
+    public Task ShowModal()
+    {
+        return modalRef.Show();
+    }
+
+    private Task CloseModal()
+    {
+
+        return modalRef.Hide();
+    }
+
+    private async Task ConfirmAction()
+    {
+        await CloseModal();
+        if (OnConfirm.HasDelegate)
+        {
+            await OnConfirm.InvokeAsync();
+        }
+    }
+
+
+}

@@ -3,5 +3,7 @@
     public class NotificationService
     {
         public string? Message { get; set; }
+
+        public string? ErrorMessage { get; set; }
     }
 }

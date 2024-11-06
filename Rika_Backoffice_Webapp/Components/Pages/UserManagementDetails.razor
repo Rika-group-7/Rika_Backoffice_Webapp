@@ -1,12 +1,15 @@
 ﻿@page "/user/{UserId}"
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
-@inject NavigationManager navigationManager
+@using Blazorise
+@using Blazorise.Bootstrap
 @rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@inject UserService _userService
 @inject NotificationService NotificationService
 
 
-@inject UserService _userService
+<ConfirmPopup @ref="confirmPopup" OnConfirm="DeleteUser"></ConfirmPopup>
 
 <div class="container mt-5">
     <h2 class="mb-4">User Profile</h2>
@@ -30,15 +33,18 @@
                 <input type="email" class="form-control" @bind="user.Email" />
             </div>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label">User ID:</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@user.Id</p>
+            </div>
+        </div>
         <div class="text-right mt-3">
             <button class="btn btn-primary" @onclick="UpdateEmail">Save Changes</button>
-            <button class="btn btn-danger" @onclick="DeleteUser">Delete User</button>
-            
+            <Button Color="Color.Danger" @onclick="() => confirmPopup.ShowModal()">Delete User</Button>
         </div>
     </div>
 </div>
-
-
 
 
 
@@ -47,9 +53,12 @@
     public string? UserId { get; set; }
     private UserModel user = new UserModel();
 
+    private ConfirmPopup confirmPopup;
+
     public string? alertMessage;
     protected override async Task OnInitializedAsync()
     {
+        
         if(UserId != null)
         {
             user = await _userService.GetOneUserAsync(UserId);
@@ -62,7 +71,7 @@
         if (UserId != null)
         {
             await _userService.UpdateUserAsync(UserId, user);
-            NotificationService.Message = "User was updated";
+            NotificationService.Message = "User was successfully updated";
             navigationManager.NavigateTo("/usermanagement" );
         }
         else{
@@ -72,10 +81,12 @@
 
     private async Task DeleteUser()
     {
+        
         if(UserId != null)
         {
             await _userService.DeleteUserAsync(UserId);
-            navigationManager.GetUriWithQueryParameter("/usermanagement", alertMessage);
+            NotificationService.Message = "User was successfully Deleted";
+            navigationManager.NavigateTo("/usermanagement");
 
         }
         else
