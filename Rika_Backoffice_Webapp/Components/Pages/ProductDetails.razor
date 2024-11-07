@@ -1,9 +1,18 @@
 ﻿@page "/products/{ProductId}"
+@rendermode InteractiveServer
 @using Rika_Backoffice_Webapp.Models
-@inject Rika_Backoffice_Webapp.Services.ProductService _productService
+@using Rika_Backoffice_Webapp.Services
+@using Blazorise
+@using Blazorise.Bootstrap
 
+@inject NavigationManager navigationManager
+@inject ProductService _productService
+@inject NotificationService NotificationService
+
+<ConfirmPopup @ref="confirmPopup" OnConfirm="DeleteProduct" />
 
 <div class="container-fluid">
+    <AlertPopup Message="@alertMessage" />
     <div class="row mt-2">
         <div class="product-image col-4">
             <img src="@product.ProductImage" alt="Product Image" />
@@ -77,25 +86,44 @@
     </div>
     <a href="/products" class="btn btn-secondary">Back to Products</a>
     <a href=@($"/products/update/{ProductId}") class="btn btn-primary">Update Product</a>
+    <Button Color="Color.Danger" @onclick="() => confirmPopup.ShowModal()">Delete Product</Button>
 </div>
 
-
-
-
-
-
 @code {
+
     [Parameter]
     public string? ProductId { get; set; }
+
     private Product product = new Product();
+
+    private ConfirmPopup confirmPopup;
+
+    private string? alertMessage;
 
     protected override async Task OnInitializedAsync()
     {
         if (ProductId != null)
         {
             var response = await _productService.GetProductByIdAsync(ProductId);
-            product = response.Data.ProductReceived!;
+            if (response.Data != null)
+            {
+                product = response.Data.ProductReceived!;
+            }
         }
+    }
 
+    private async Task DeleteProduct()
+    {
+
+        if (ProductId != null)
+        {
+            await _productService.DeleteProduct(ProductId);
+            NotificationService.Message = "Product was successfully Deleted";
+            navigationManager.NavigateTo("/products");
+        }
+        else
+        {
+            alertMessage = "Product not found";
+        }
     }
 }
