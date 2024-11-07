@@ -24,7 +24,7 @@
 </div>
 
 <div class="container card shadow-sm">
-    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10" RowClicked="RowClicked">
+    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Hoverable="true" Responsive="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
         <DataGridColumns>
             <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
             <DataGridColumn TItem="Product" Field="@nameof(Product.Title)" Caption="Name" Sortable="true" />
@@ -88,4 +88,8 @@
         _navigationManager.NavigateTo($"/products/{productId}");
     }
 
+    private Cursor HoverCursor(Product product)
+    {
+        return Blazorise.Cursor.Pointer;
+    }
 }
