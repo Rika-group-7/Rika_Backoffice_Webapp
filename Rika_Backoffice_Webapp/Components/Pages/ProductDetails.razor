@@ -1,0 +1,27 @@
+﻿@page "/products/{ProductId}"
+@using Rika_Backoffice_Webapp.Models
+@inject Rika_Backoffice_Webapp.Services.ProductService _productService
+
+
+<p>@product.Id</p>
+<p>@product.Title</p>
+<p>@product.Description</p>
+<p>@product.Price</p>
+
+
+
+@code {
+    [Parameter]
+    public string? ProductId { get; set; }
+    private Product product = new Product();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ProductId != null)
+        {
+            var response = await _productService.GetProductByIdAsync(ProductId);
+            product = response.Data.ProductReceived!;
+        }
+
+    }
+}
