@@ -109,7 +109,7 @@ public class ProductService
     }
 
     //UPDATE PRODUCT
-    public async Task UpdateProduct(ProductUpdateRequest input)
+    public async Task<GraphQLResponse<ProductUpdateRequest>> UpdateProduct(ProductUpdateRequest input)
     {
         var updateProudctMutaion = new GraphQLRequest
         {
@@ -143,7 +143,7 @@ public class ProductService
                 input
             }
         };
-        await _graphqlClient.SendMutationAsync<ProductUpdateRequest>(updateProudctMutaion);
+        return await _graphqlClient.SendMutationAsync<ProductUpdateRequest>(updateProudctMutaion);
     }
 
     //DELETE PRODUCT
