@@ -3,10 +3,43 @@
 @inject Rika_Backoffice_Webapp.Services.ProductService _productService
 
 
-<p>@product.Id</p>
-<p>@product.Title</p>
-<p>@product.Description</p>
-<p>@product.Price</p>
+<div class="container">
+    <div class="product-image">
+        <img src="@product.ProductImage" alt="Product Image" />
+    </div>
+    <div class="product-body">
+        <h4>@product.Title</h4>
+        <p>@product.Description</p>
+        <p>Price: @product.Price</p>
+        @if (product.Categories != null)
+        {
+            @foreach (var category in product.Categories.Select((value, index) => (value, index)))
+            {
+                var value = category.value;
+                var index = category.index;
+                
+
+                @if (index < product.Categories.Count - 1)
+                {
+                    @(value.CategoryName + ", ")
+                }
+                else
+                {
+                    @value.CategoryName
+                }
+            }
+        }
+        <p>Brand: @product.Brand</p>
+        <p>Size: @product.Size</p>
+        <p>Color: @product.Color</p>
+        <p>@product.SKU</p>
+        <p>@product.Ratings</p>
+        <p>In Stock? @product.StockStatus</p>
+        
+    </div>
+</div>
+
+<a href="/products" class="btn btn-primary">Back to Products</a>
 
 
 
