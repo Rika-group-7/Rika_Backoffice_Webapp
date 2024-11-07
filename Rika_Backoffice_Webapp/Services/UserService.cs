@@ -80,6 +80,7 @@ public class UserService
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             return false;
         }
         return false;

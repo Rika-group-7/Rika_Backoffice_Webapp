@@ -4,6 +4,7 @@ using Blazorise.Icons.FontAwesome;
 using Rika_Backoffice_Webapp.Components;
 using Rika_Backoffice_Webapp.Services;
 using Microsoft.AspNetCore.Components.Authorization;
+using Blazorise.Bootstrap5;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services
         options.Immediate = true;
     })
     .AddBootstrapProviders()
+    .AddBootstrap5Providers()
     .AddFontAwesomeIcons()
     .AddScoped<UserService>()
     .AddHttpClient()
@@ -23,6 +25,7 @@ builder.Services
 builder.Services.AddScoped<JwtAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<JwtAuthenticationStateProvider>());
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<NotificationService>();
 
 var app = builder.Build();
 
