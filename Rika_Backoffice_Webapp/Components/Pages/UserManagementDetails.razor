@@ -3,13 +3,15 @@
 @using Rika_Backoffice_Webapp.Services
 @using Blazorise
 @using Blazorise.Bootstrap
+
 @rendermode InteractiveServer
 @inject NavigationManager navigationManager
 @inject UserService _userService
 @inject NotificationService NotificationService
 
 
-<ConfirmPopup @ref="confirmPopup" OnConfirm="DeleteUser"></ConfirmPopup>
+<ConfirmPopup @ref="confirmPopup" OnConfirm="DeleteUser" />
+
 
 <div class="container mt-5">
     <h2 class="mb-4">User Profile</h2>

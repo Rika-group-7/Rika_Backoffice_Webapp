@@ -9,17 +9,24 @@
 @inject NotificationService _notificationService
 
 <PageTitle>User Management </PageTitle>
-<AlertPopup Message="@_notificationService.Message" />
-<div class="container card shadow-sm">
+<div class="container card shadow-sm pt-2">
+    <AlertPopup Message="@_notificationService.Message" />
 
-    <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
-        <DataGridColumns>
-            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.FirstName)" Caption="First Name" Sortable="true" />
-            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.LastName)" Caption="Last Name" Sortable="true" />
-            <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Email)" Caption="Email" Sortable="true" />
+    @if(Users == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
+            <DataGridColumns>
+                <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.FirstName)" Caption="First Name" Sortable="true" />
+                <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.LastName)" Caption="Last Name" Sortable="true" />
+                <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Email)" Caption="Email" Sortable="true" />
+            </DataGridColumns>
+        </DataGrid>
+    }
 
-        </DataGridColumns>
-    </DataGrid>
 
 </div>
 
@@ -27,10 +34,11 @@
 
 
     private List<UserModel> Users = new List<UserModel>();
-    private string? alertMessage;
+
 
     protected override async Task OnInitializedAsync()
     {
+
         Users = await _userService.GetAllUserAsync();
 
 
