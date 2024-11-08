@@ -4,10 +4,14 @@
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
 @rendermode InteractiveServer
+
 @inject ProductService _productService
 @inject NavigationManager _navigationManager
+@inject NotificationService _notificationService
 
 <PageTitle>Products</PageTitle>
+
+<AlertPopup Message="@_notificationService.Message" />
 
 <h3>Products Management</h3>
 <div>
