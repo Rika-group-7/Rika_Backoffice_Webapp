@@ -5,9 +5,9 @@
 @using Blazorise
 @using Blazorise.Bootstrap
 
-@inject NavigationManager navigationManager
+@inject NavigationManager _navigationManager
 @inject ProductService _productService
-@inject NotificationService NotificationService
+@inject NotificationService _notificationService
 
 <ConfirmPopup @ref="confirmPopup" OnConfirm="DeleteProduct" />
 
@@ -96,7 +96,7 @@
 
     private Product product = new Product();
 
-    private ConfirmPopup confirmPopup;
+    private ConfirmPopup? confirmPopup;
 
     private string? alertMessage;
 
@@ -118,8 +118,8 @@
         if (ProductId != null)
         {
             await _productService.DeleteProduct(ProductId);
-            NotificationService.Message = "Product was successfully Deleted";
-            navigationManager.NavigateTo("/products");
+            _notificationService.Message = "Product was successfully Deleted";
+            _navigationManager.NavigateTo("/products");
         }
         else
         {

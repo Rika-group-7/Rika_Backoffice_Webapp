@@ -4,7 +4,9 @@
 @using Rika_Backoffice_Webapp.Services
 @using System.Diagnostics
 
-@inject Rika_Backoffice_Webapp.Services.ProductService _productService
+@inject NavigationManager _navigationManager
+@inject ProductService _productService
+@inject NotificationService _notificationService
 
 
 <h3>Create Product</h3>
@@ -96,7 +98,7 @@
     }
     <button type="button" class="btn btn-primary" @onclick="AddMaterial">Add Material</button>
 
-    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+    <button type="submit" class="w-100 btn btn-lg btn-primary">Update product</button>
 
 </EditForm>
 
@@ -157,7 +159,7 @@
                     ProductUpdateInput.Materials.Add(newMaterial);
                 }
             }
-           
+
         }
     }
 
@@ -192,5 +194,11 @@
     private async Task SubmitUpdateProduct()
     {
         var response = await _productService.UpdateProduct(ProductUpdateInput);
+
+        if (response != null)
+        {
+            _notificationService.Message = "Product was successfully updated";
+            _navigationManager.NavigateTo("/products");
+        }
     }
 }
