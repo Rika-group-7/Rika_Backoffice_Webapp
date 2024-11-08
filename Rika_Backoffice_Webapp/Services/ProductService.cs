@@ -147,13 +147,13 @@ public class ProductService
     }
 
     //DELETE PRODUCT
-    public async Task<GraphQLResponse<string>> DeleteProduct(string id)
+    public async Task<GraphQLResponse<DeleteProductResponseModel>> DeleteProduct(string id)
     {
         var deleteProductMutation = new GraphQLRequest
         {
             Query = @"
                 mutation ($id: String!) {
-                    deleteProduct(id: $id) { id }
+                    deleteProduct(id: $id)
                 }
             ",
             Variables = new
@@ -162,6 +162,6 @@ public class ProductService
             }
         };
 
-        return await _graphqlClient.SendMutationAsync<string>(deleteProductMutation);
+        return await _graphqlClient.SendMutationAsync<DeleteProductResponseModel>(deleteProductMutation);
     }
 }
