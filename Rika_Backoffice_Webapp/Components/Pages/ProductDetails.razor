@@ -9,7 +9,7 @@
 @inject ProductService _productService
 @inject NotificationService _notificationService
 
-<ConfirmPopup @ref="confirmPopup" OnConfirm="DeleteProduct" />
+<ConfirmPopup @ref="confirmPopup" OnDelete="DeleteProduct" />
 
 <div class="container-fluid">
     <AlertPopup Message="@alertMessage" />
@@ -86,7 +86,7 @@
     </div>
     <a href="/products" class="btn btn-secondary">Back to Products</a>
     <a href=@($"/products/update/{ProductId}") class="btn btn-primary">Update Product</a>
-    <Button Color="Color.Danger" @onclick="() => confirmPopup.ShowModal()">Delete Product</Button>
+    <Button Color="Color.Danger" @onclick="() => ShowDeleteConfirm()">Delete Product</Button>
 </div>
 
 @code {
@@ -124,6 +124,14 @@
         else
         {
             alertMessage = "Product not found";
+        }
+    }
+
+    private async Task ShowDeleteConfirm()
+    {
+        if (confirmPopup != null)
+        {
+            await confirmPopup.ShowModal(true, $"Delete: {product.Title}", "Are you sure you want to DELETE this product?", "Delete");
         }
     }
 }
