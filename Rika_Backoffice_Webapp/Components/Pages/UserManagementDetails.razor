@@ -10,8 +10,7 @@
 @inject NotificationService NotificationService
 
 
-<ConfirmPopup @ref="confirmPopup" OnConfirm="DeleteUser" />
-
+<ConfirmPopup @ref="confirmPopup" OnDelete="DeleteUser" OnUpdate="UpdateEmail" />
 
 <div class="container mt-5">
     <h2 class="mb-4">User Profile</h2>
@@ -42,8 +41,8 @@
             </div>
         </div>
         <div class="text-right mt-3">
-            <button class="btn btn-primary" @onclick="UpdateEmail">Save Changes</button>
-            <Button Color="Color.Danger" @onclick="() => confirmPopup.ShowModal()">Delete User</Button>
+            <Button Color="Color.Primary" @onclick="() => ShowUpdateConfirm()">Save Changes</Button>
+            <Button Color="Color.Danger" @onclick="() => ShowDeleteConfirm()">Delete User</Button>
         </div>
     </div>
 </div>
@@ -54,13 +53,11 @@
     [Parameter]
     public string? UserId { get; set; }
     private UserModel user = new UserModel();
-
-    private ConfirmPopup confirmPopup;
-
+    private ConfirmPopup? confirmPopup;
     public string? alertMessage;
     protected override async Task OnInitializedAsync()
     {
-        
+
         if(UserId != null)
         {
             user = await _userService.GetOneUserAsync(UserId);
@@ -83,7 +80,7 @@
 
     private async Task DeleteUser()
     {
-        
+
         if(UserId != null)
         {
             await _userService.DeleteUserAsync(UserId);
@@ -93,6 +90,20 @@
         else
         {
             alertMessage = "User not found";
+        }
+    }
+    private async Task ShowUpdateConfirm()
+    {
+        if(confirmPopup != null)
+        {
+            await confirmPopup.ShowModal(false, $"Update: {user.Email}", "Are you sure you want to update user?", "Save");
+        }
+    }
+    private async Task ShowDeleteConfirm()
+    {
+        if (confirmPopup != null)
+        {
+            await confirmPopup.ShowModal(true, $"Delete: {user.Email}", "Are you sure you want to DELETE user?", "Delete");
         }
     }
 }
