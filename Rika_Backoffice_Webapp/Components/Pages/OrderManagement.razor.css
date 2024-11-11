@@ -1,0 +1,23 @@
+﻿.container {
+    margin-top: 100px;
+}
+.container .ordercard {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ff0000;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.container .ordercard .customer-info {
+    display: flex;
+    gap: 20px;
+}
+.container .ordercard .amount {
+    display: flex;
+    gap: 20px;
+}
+.container .ordercard .date {
+
+}

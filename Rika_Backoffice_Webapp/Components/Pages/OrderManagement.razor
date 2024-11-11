@@ -1,0 +1,44 @@
+﻿@page "/ordermanagement"
+@using Rika_Backoffice_Webapp.Models
+@inject OrderService _orderService
+
+@if (Orders == null)
+{
+    <p>Loading...</p>
+}
+else if (!Orders.Any())
+{
+    <p>No orders found</p>
+}
+else
+{
+    <div class="container">
+        @foreach (var order in Orders)
+        {
+            <a class="ordercard" href="@($"/orderdetails/{order.OrderNumber}")">
+                <div class="customer-info">
+                    <p>Customer email: @order.CustomerEmail</p>
+                    <p>Customer Id: @order.CustomerId</p>
+                </div>
+                <p>Order number: @order.OrderNumber</p>
+                <div class="amount">
+                    <p>Items ordered: @order.OrderItems.Count.ToString()</p>
+                    <p>Total amount: $@order.TotalAmount</p>
+                </div>
+                <p class="date">Ordered on: @order.OrderDate.ToString("dd-MMM-yyyy")</p>
+            </a>
+        }
+
+    </div>
+
+}
+
+@code {
+    private List<OrderModel>? Orders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Orders = await _orderService.GetAllOrdersAsync();
+    }
+    
+}
