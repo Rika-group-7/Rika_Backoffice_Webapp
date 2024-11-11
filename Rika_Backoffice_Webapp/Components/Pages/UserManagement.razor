@@ -30,17 +30,13 @@
 
 @code {
 
-
     private List<UserModel> Users = new List<UserModel>();
-
 
     protected override async Task OnInitializedAsync()
     {
-
         Users = await _userService.GetAllUserAsync();
-
-
     }
+
     private void RowClicked(DataGridRowMouseEventArgs<UserModel> e)
     {
         var userId = e.Item.Id;
@@ -51,6 +47,5 @@
     {
         return Blazorise.Cursor.Pointer;
     }
-
 
 }
