@@ -10,38 +10,32 @@
 <PageTitle>Home</PageTitle>
 
 <div class="container">
-<header>
-    <h1>Backoffice</h1>
-    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-</header>
-
-
-<aside class="sidebar" id="sidebar">
-    <nav>
-        <ul>
-            <li><a href="#user-management"><i class="fas fa-users"></i> Användarhantering</a></li>
-            <li><a href="#order-management"><i class="fas fa-box"></i> Orderhantering</a></li>
-            <li><a href="#product-catalog"><i class="fas fa-box-open"></i> Produktkatalog</a></li>
-            <li><a href="#reports"><i class="fas fa-chart-line"></i> Rapporter & Statistik</a></li>
-            <li><a href="#settings"><i class="fas fa-cogs"></i> Inställningar</a></li>
-            <li><a href="#support"><i class="fas fa-life-ring"></i> Support & Hjälp</a></li>
-        </ul>
-    </nav>
-</aside>
-
-
-<main>
-    
-    <section id="user-management" class="section-card">
-        <h2>Användarhantering</h2>
-        <p>Hantera användarkonton och behörigheter.</p>
-        <button onclick="navigateTo('user-management')">Gå till Användarhantering</button>
-    </section>
-
-     <AuthorizeView>
-        <Authorized>
-            <button>Hemlig knapp här!</button>
-        </Authorized>
-    </AuthorizeView>
+    <header>
+        <h1>Backoffice</h1>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    </header>
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="#user-management"><i class="fas fa-users"></i> Användarhantering</a></li>
+                <li><a href="#order-management"><i class="fas fa-box"></i> Orderhantering</a></li>
+                <li><a href="#product-catalog"><i class="fas fa-box-open"></i> Produktkatalog</a></li>
+                <li><a href="#reports"><i class="fas fa-chart-line"></i> Rapporter & Statistik</a></li>
+                <li><a href="#settings"><i class="fas fa-cogs"></i> Inställningar</a></li>
+                <li><a href="#support"><i class="fas fa-life-ring"></i> Support & Hjälp</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+        <section id="user-management" class="section-card">
+            <h2>Användarhantering</h2>
+            <p>Hantera användarkonton och behörigheter.</p>
+            <button onclick="navigateTo('user-management')">Gå till Användarhantering</button>
+        </section>
+         <AuthorizeView>
+            <Authorized>
+                <button>Hemlig knapp här!</button>
+            </Authorized>
+        </AuthorizeView>
     </main>
 </div>
