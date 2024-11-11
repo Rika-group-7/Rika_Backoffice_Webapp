@@ -6,10 +6,10 @@
 @using Blazorise.DataGrid
 
 @rendermode InteractiveServer
-@inject NavigationManager navigationManager
+@inject NavigationManager _navigationManager
 @inject UserService _userService
 @inject OrderService _orderService
-@inject NotificationService NotificationService
+@inject NotificationService _notificationService
 
 
 <ConfirmPopup @ref="confirmPopup" OnDelete="DeleteUser" OnUpdate="UpdateEmail" />
@@ -102,8 +102,8 @@
         if (UserId != null)
         {
             await _userService.UpdateUserAsync(UserId, user);
-            NotificationService.Message = "User was successfully updated";
-            navigationManager.NavigateTo("/usermanagement" );
+            _notificationService.Message = "User was successfully updated";
+            _navigationManager.NavigateTo("/usermanagement" );
         }
         else{
             alertMessage = "User not found";
@@ -116,9 +116,8 @@
         if(UserId != null)
         {
             await _userService.DeleteUserAsync(UserId);
-            NotificationService.Message = "User was successfully Deleted";
-            navigationManager.NavigateTo("/usermanagement");
-
+            _notificationService.Message = "User was successfully Deleted";
+            _navigationManager.NavigateTo("/usermanagement");
         }
         else
         {

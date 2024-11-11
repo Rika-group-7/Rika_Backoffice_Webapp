@@ -4,9 +4,14 @@
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
 @rendermode InteractiveServer
+
 @inject ProductService _productService
+@inject NavigationManager _navigationManager
+@inject NotificationService _notificationService
 
 <PageTitle>Products</PageTitle>
+
+<AlertPopup Message="@_notificationService.Message" />
 
 <h3>Products Management</h3>
 <div>
@@ -23,7 +28,7 @@
 </div>
 
 <div class="container card shadow-sm">
-    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10">
+    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Hoverable="true" Responsive="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
         <DataGridColumns>
             <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
             <DataGridColumn TItem="Product" Field="@nameof(Product.Title)" Caption="Name" Sortable="true" />
@@ -81,4 +86,14 @@
         await FetchProducts();
     }
 
+    private void RowClicked(DataGridRowMouseEventArgs<Product> e)
+    {
+        var productId = e.Item.Id;
+        _navigationManager.NavigateTo($"/products/{productId}");
+    }
+
+    private Cursor HoverCursor(Product product)
+    {
+        return Blazorise.Cursor.Pointer;
+    }
 }

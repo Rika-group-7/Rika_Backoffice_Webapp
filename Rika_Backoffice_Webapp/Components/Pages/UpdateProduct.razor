@@ -1,0 +1,204 @@
+﻿@page "/products/update/{ProductToUpdateId}"
+@rendermode InteractiveServer
+@using Rika_Backoffice_Webapp.Models
+@using Rika_Backoffice_Webapp.Services
+@using System.Diagnostics
+
+@inject NavigationManager _navigationManager
+@inject ProductService _productService
+@inject NotificationService _notificationService
+
+
+<h3>Create Product</h3>
+
+<AlertPopup Message="@alertMessage" />
+
+<EditForm Model="ProductUpdateInput" method="post" OnValidSubmit="SubmitUpdateProduct" FormName="UpdateProductForm">
+
+    <div class"create-form-title">
+        <h4>Product</h4>
+    </div>
+
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductUpdateInput.Title" class="form-control" placeholder="Product title" />
+        <label class="form-label">Title</label>
+        <ValidationMessage For="() => ProductUpdateInput.Title" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductUpdateInput.Brand" class="form-control" placeholder="Product brand" />
+        <label class="form-label">Brand</label>
+        <ValidationMessage For="() => ProductUpdateInput.Brand" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductUpdateInput.Size" class="form-control" placeholder="Product size" />
+        <label class="form-label">Size</label>
+        <ValidationMessage For="() => ProductUpdateInput.Size" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductUpdateInput.Color" class="form-control" placeholder="Product color" />
+        <label class="form-label">Color</label>
+        <ValidationMessage For="() => ProductUpdateInput.Color" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputNumber @bind-Value="ProductUpdateInput.Price" class="form-control" placeholder="Product price" />
+        <label class="form-label">Price</label>
+        <ValidationMessage For="() => ProductUpdateInput.Price" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductUpdateInput.Description" class="form-control" placeholder="Product description" />
+        <label class="form-label">Description</label>
+        <ValidationMessage For="() => ProductUpdateInput.Description" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputCheckbox @bind-Value="ProductUpdateInput.StockStatus" class="form-control-check" />
+        <label class="form-label">In stock?</label>
+        <ValidationMessage For="() => ProductUpdateInput.StockStatus" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductUpdateInput.SKU" class="form-control" placeholder="Product SKU" />
+        <label class="form-label">SKU</label>
+        <ValidationMessage For="() => ProductUpdateInput.SKU" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputNumber @bind-Value="ProductUpdateInput.Ratings" class="form-control" placeholder="Product rating" />
+        <label class="form-label">Product rating</label>
+        <ValidationMessage For="() => ProductUpdateInput.Ratings" class="text-danger" />
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="ProductUpdateInput.ProductImage" class="form-control" placeholder="Product image" />
+        <label class="form-label">Image</label>
+        <ValidationMessage For="() => ProductUpdateInput.ProductImage" class="text-danger" />
+    </div>
+
+    @if (ProductUpdateInput.Categories != null)
+    {
+        @foreach (var category in ProductUpdateInput.Categories)
+        {
+            <button type="button" class="btn btn-danger" @onclick="() => RemoveCategory(category)">Remove Category</button>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="category.CategoryName" class="form-control" placeholder="Product category" />
+                <label class="form-label">Category</label>
+                <ValidationMessage For="() => category.CategoryName" class="text-danger" />
+            </div>
+        }
+    }
+    <button type="button" class="btn btn-primary" @onclick="AddCategory">Add Category</button>
+
+    @if (ProductUpdateInput.Materials != null)
+    {
+        @foreach (var material in ProductUpdateInput.Materials)
+        {
+            <button type="button" class="btn btn-danger" @onclick="() => RemoveMaterial(material)">Remove Material</button>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="material.MaterialName" class="form-control" placeholder="Product material" />
+                <label class="form-label">Material</label>
+                <ValidationMessage For="() => material.MaterialName" class="text-danger" />
+            </div>
+        }
+    }
+    <button type="button" class="btn btn-primary" @onclick="AddMaterial">Add Material</button>
+
+    <button type="submit" class="w-100 btn btn-lg btn-primary">Update product</button>
+
+</EditForm>
+
+@code {
+
+    private string? alertMessage;
+
+    [Parameter]
+    public string? ProductToUpdateId { get; set; }
+
+    private Product product = new Product();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ProductToUpdateId != null)
+        {
+            var response = await _productService.GetProductByIdAsync(ProductToUpdateId);
+            product = response.Data.ProductReceived!;
+
+            ProductUpdateInput.Id = product.Id;
+            ProductUpdateInput.Title = product.Title;
+            ProductUpdateInput.Brand = product.Brand;
+            ProductUpdateInput.Size = product.Size;
+            ProductUpdateInput.Color = product.Color;
+            ProductUpdateInput.Price = product.Price;
+            ProductUpdateInput.Description = product.Description;
+            ProductUpdateInput.StockStatus = product.StockStatus;
+            ProductUpdateInput.SKU = product.SKU;
+            ProductUpdateInput.Ratings = product.Ratings;
+            ProductUpdateInput.ProductImage = product.ProductImage;
+
+            ProductUpdateInput.Categories = new List<CategoryUpdateRequest>();
+            ProductUpdateInput.Materials = new List<MaterialUpdateRequest>();
+
+
+            if (product.Categories != null)
+            {
+                foreach (var category in product.Categories)
+                {
+                    var newCategory = new CategoryUpdateRequest
+                        {
+                            Id = category.Id,
+                            CategoryName = category.CategoryName
+                        };
+                    ProductUpdateInput.Categories.Add(newCategory);
+                }
+            }
+
+            if (product.Materials != null)
+            {
+                foreach (var material in product.Materials)
+                {
+                    var newMaterial = new MaterialUpdateRequest
+                        {
+                            Id = material.Id,
+                            MaterialName = material.MaterialName
+                        };
+                    ProductUpdateInput.Materials.Add(newMaterial);
+                }
+            }
+
+        }
+    }
+
+    private ProductUpdateRequest ProductUpdateInput = new ProductUpdateRequest
+    {
+        // Categories = new List<ProductUpdateRequest.CategoryUpdateRequest>(),
+        // Materials = new List<ProductUpdateRequest.MaterialUpdateRequest>()
+    };
+
+    private void AddCategory()
+    {
+        ProductUpdateInput.Categories?.Add(new CategoryUpdateRequest());
+    }
+
+    public void AddMaterial()
+    {
+        ProductUpdateInput.Materials?.Add(new MaterialUpdateRequest());
+    }
+
+    private void RemoveCategory(CategoryUpdateRequest category)
+    {
+        ProductUpdateInput.Categories?.Remove(category);
+        StateHasChanged();
+    }
+
+    private void RemoveMaterial(MaterialUpdateRequest material)
+    {
+        ProductUpdateInput.Materials?.Remove(material);
+        StateHasChanged();
+    }
+
+    private async Task SubmitUpdateProduct()
+    {
+        var response = await _productService.UpdateProduct(ProductUpdateInput);
+
+        if (response != null)
+        {
+            _notificationService.Message = "Product was successfully updated";
+            _navigationManager.NavigateTo("/products");
+        }
+    }
+}
