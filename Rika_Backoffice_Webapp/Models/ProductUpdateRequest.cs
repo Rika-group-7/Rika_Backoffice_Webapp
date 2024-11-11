@@ -20,12 +20,10 @@ public class ProductUpdateRequest
 
 public class CategoryUpdateRequest
 {
-    public string? Id { get; set; }
     public string? CategoryName { get; set; }
     public List<CategoryUpdateRequest>? SubCategories { get; set; } = [];
 }
 public class MaterialUpdateRequest
 {
-    public string? Id { get; set; }
     public string? MaterialName { get; set; }
 }

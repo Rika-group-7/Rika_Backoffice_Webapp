@@ -68,7 +68,8 @@ public class ProductService
                 input
             }
         };
-        return await _graphqlClient.SendMutationAsync<CreateProductResponseModel>(createProductMutation);
+        var response = await _graphqlClient.SendMutationAsync<CreateProductResponseModel>(createProductMutation);
+        return response;
     }
 
     //GET PRODUCT BY ID

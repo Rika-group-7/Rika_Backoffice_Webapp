@@ -9,98 +9,110 @@
 @inject NotificationService _notificationService
 
 
-<h3>Create Product</h3>
-
 <AlertPopup Message="@alertMessage" />
 
-<EditForm Model="ProductUpdateInput" method="post" OnValidSubmit="SubmitUpdateProduct" FormName="UpdateProductForm">
 
-    <div class"create-form-title">
-        <h4>Product</h4>
-    </div>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-6 col-md-6 col-lg-8">
+        <EditForm Model="ProductUpdateInput" method="post" OnValidSubmit="SubmitUpdateProduct" FormName="UpdateProductForm">
 
-    <div class="form-floating mb-3">
-        <InputText @bind-Value="ProductUpdateInput.Title" class="form-control" placeholder="Product title" />
-        <label class="form-label">Title</label>
-        <ValidationMessage For="() => ProductUpdateInput.Title" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputText @bind-Value="ProductUpdateInput.Brand" class="form-control" placeholder="Product brand" />
-        <label class="form-label">Brand</label>
-        <ValidationMessage For="() => ProductUpdateInput.Brand" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputText @bind-Value="ProductUpdateInput.Size" class="form-control" placeholder="Product size" />
-        <label class="form-label">Size</label>
-        <ValidationMessage For="() => ProductUpdateInput.Size" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputText @bind-Value="ProductUpdateInput.Color" class="form-control" placeholder="Product color" />
-        <label class="form-label">Color</label>
-        <ValidationMessage For="() => ProductUpdateInput.Color" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputNumber @bind-Value="ProductUpdateInput.Price" class="form-control" placeholder="Product price" />
-        <label class="form-label">Price</label>
-        <ValidationMessage For="() => ProductUpdateInput.Price" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputText @bind-Value="ProductUpdateInput.Description" class="form-control" placeholder="Product description" />
-        <label class="form-label">Description</label>
-        <ValidationMessage For="() => ProductUpdateInput.Description" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputCheckbox @bind-Value="ProductUpdateInput.StockStatus" class="form-control-check" />
-        <label class="form-label">In stock?</label>
-        <ValidationMessage For="() => ProductUpdateInput.StockStatus" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputText @bind-Value="ProductUpdateInput.SKU" class="form-control" placeholder="Product SKU" />
-        <label class="form-label">SKU</label>
-        <ValidationMessage For="() => ProductUpdateInput.SKU" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputNumber @bind-Value="ProductUpdateInput.Ratings" class="form-control" placeholder="Product rating" />
-        <label class="form-label">Product rating</label>
-        <ValidationMessage For="() => ProductUpdateInput.Ratings" class="text-danger" />
-    </div>
-    <div class="form-floating mb-3">
-        <InputText @bind-Value="ProductUpdateInput.ProductImage" class="form-control" placeholder="Product image" />
-        <label class="form-label">Image</label>
-        <ValidationMessage For="() => ProductUpdateInput.ProductImage" class="text-danger" />
-    </div>
+            <h3 class="ms-1 mb-3 mt-3">Update Product</h3>
 
-    @if (ProductUpdateInput.Categories != null)
-    {
-        @foreach (var category in ProductUpdateInput.Categories)
-        {
-            <button type="button" class="btn btn-danger" @onclick="() => RemoveCategory(category)">Remove Category</button>
             <div class="form-floating mb-3">
-                <InputText @bind-Value="category.CategoryName" class="form-control" placeholder="Product category" />
-                <label class="form-label">Category</label>
-                <ValidationMessage For="() => category.CategoryName" class="text-danger" />
+                <InputText @bind-Value="ProductUpdateInput.Title" class="form-control" placeholder="Product title" />
+                <label class="form-label">Title</label>
+                <ValidationMessage For="() => ProductUpdateInput.Title" class="text-danger" />
             </div>
-        }
-    }
-    <button type="button" class="btn btn-primary" @onclick="AddCategory">Add Category</button>
-
-    @if (ProductUpdateInput.Materials != null)
-    {
-        @foreach (var material in ProductUpdateInput.Materials)
-        {
-            <button type="button" class="btn btn-danger" @onclick="() => RemoveMaterial(material)">Remove Material</button>
             <div class="form-floating mb-3">
-                <InputText @bind-Value="material.MaterialName" class="form-control" placeholder="Product material" />
-                <label class="form-label">Material</label>
-                <ValidationMessage For="() => material.MaterialName" class="text-danger" />
+                <InputText @bind-Value="ProductUpdateInput.Brand" class="form-control" placeholder="Product brand" />
+                <label class="form-label">Brand</label>
+                <ValidationMessage For="() => ProductUpdateInput.Brand" class="text-danger" />
             </div>
-        }
-    }
-    <button type="button" class="btn btn-primary" @onclick="AddMaterial">Add Material</button>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="ProductUpdateInput.Size" class="form-control" placeholder="Product size" />
+                <label class="form-label">Size</label>
+                <ValidationMessage For="() => ProductUpdateInput.Size" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="ProductUpdateInput.Color" class="form-control" placeholder="Product color" />
+                <label class="form-label">Color</label>
+                <ValidationMessage For="() => ProductUpdateInput.Color" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputNumber @bind-Value="ProductUpdateInput.Price" class="form-control" placeholder="Product price" />
+                <label class="form-label">Price</label>
+                <ValidationMessage For="() => ProductUpdateInput.Price" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="ProductUpdateInput.Description" class="form-control" placeholder="Product description" />
+                <label class="form-label">Description</label>
+                <ValidationMessage For="() => ProductUpdateInput.Description" class="text-danger" />
+            </div>
+            <div class="form-check mb-3">
+                <InputCheckbox @bind-Value="ProductUpdateInput.StockStatus" class="form-check-input" />
+                <label class="form-check-label">In stock</label>
+                <ValidationMessage For="() => ProductUpdateInput.StockStatus" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="ProductUpdateInput.SKU" class="form-control" placeholder="Product SKU" />
+                <label class="form-label">SKU</label>
+                <ValidationMessage For="() => ProductUpdateInput.SKU" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputNumber @bind-Value="ProductUpdateInput.Ratings" class="form-control" placeholder="Product rating" />
+                <label class="form-label">Product rating</label>
+                <ValidationMessage For="() => ProductUpdateInput.Ratings" class="text-danger" />
+            </div>
+            <div class="form-floating">
+                <InputText @bind-Value="ProductUpdateInput.ProductImage" class="form-control" placeholder="Product image" />
+                <label class="form-label">Image</label>
+                <ValidationMessage For="() => ProductUpdateInput.ProductImage" class="text-danger" />
+            </div>
 
-    <button type="submit" class="w-100 btn btn-lg btn-primary">Update product</button>
+            <hr class="my-4" />
 
-</EditForm>
+            @if (ProductUpdateInput.Categories != null)
+            {
+                @foreach (var category in ProductUpdateInput.Categories)
+                {
+                    <div class="input-group">                 
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="category.CategoryName" class="form-control" placeholder="Product category" />
+                            <label class="form-label">Category</label>
+                            <ValidationMessage For="() => category.CategoryName" class="text-danger" />
+                        </div>
+                        <button type="button" class="btn btn-danger mb-3" @onclick="() => RemoveCategory(category)">Remove Category</button>
+                    </div>
+                }
+            }
+            <button type="button" class="btn btn-primary" @onclick="AddCategory">Add Category</button>
+
+            <hr class="my-4" />
+
+            @if (ProductUpdateInput.Materials != null)
+            {
+                @foreach (var material in ProductUpdateInput.Materials)
+                {
+                    <div class="input-group"> 
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="material.MaterialName" class="form-control" placeholder="Product material" />
+                            <label class="form-label">Material</label>
+                            <ValidationMessage For="() => material.MaterialName" class="text-danger" />
+                        </div>
+                        <button type="button" class="btn btn-danger mb-3" @onclick="() => RemoveMaterial(material)">Remove Material</button>
+                    </div>
+                }
+            }
+            <button type="button" class="btn btn-primary mb-4" @onclick="AddMaterial">Add Material</button>
+
+            <div class="create-submit-button">
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Update product</button>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
 
 @code {
 
@@ -140,7 +152,7 @@
                 {
                     var newCategory = new CategoryUpdateRequest
                         {
-                            Id = category.Id,
+                            
                             CategoryName = category.CategoryName
                         };
                     ProductUpdateInput.Categories.Add(newCategory);
@@ -153,7 +165,7 @@
                 {
                     var newMaterial = new MaterialUpdateRequest
                         {
-                            Id = material.Id,
+                            
                             MaterialName = material.MaterialName
                         };
                     ProductUpdateInput.Materials.Add(newMaterial);
