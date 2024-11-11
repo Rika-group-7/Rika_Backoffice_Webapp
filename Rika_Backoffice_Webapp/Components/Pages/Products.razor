@@ -13,21 +13,16 @@
 
 <AlertPopup Message="@_notificationService.Message" />
 
-<h3>Products Management</h3>
-<div>
+<div class="container mt-5"
     <div class="products-title">
-        <h5>Please select one option</h5>
-    </div>
-    <div class="products-buttons">
-        <a href="/products/create" class="btn">Create new product</a>
-        <a href="/products/update" class="btn">Update product</a>
-        <a href="/products/getone" class="btn">Find one product</a>
-        <a href="/products/getall" class="btn">Find all products</a>
-        <a href="/products/delete" class="btn">Delete one product</a>
+        <h3>Products Management</h3>
     </div>
 </div>
 
 <div class="container card shadow-sm">
+    <div class="products-buttons">
+        <a href="/products/create" class="btn btn-primary mt-3 mb-2">Create new product</a>
+    </div>
     <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Hoverable="true" Responsive="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
         <DataGridColumns>
             <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
