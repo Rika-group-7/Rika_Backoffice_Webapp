@@ -21,11 +21,13 @@ builder.Services
     .AddFontAwesomeIcons()
     .AddScoped<UserService>()
     .AddHttpClient()
-    .AddSingleton<ProductService>();
+    .AddSingleton<ProductService>()
+    .AddScoped<OrderService>();
 builder.Services.AddScoped<JwtAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<JwtAuthenticationStateProvider>());
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<NotificationService>();
+
 
 var app = builder.Build();
 

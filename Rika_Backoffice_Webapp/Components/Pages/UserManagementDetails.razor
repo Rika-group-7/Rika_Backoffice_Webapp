@@ -3,10 +3,12 @@
 @using Rika_Backoffice_Webapp.Services
 @using Blazorise
 @using Blazorise.Bootstrap
+@using Blazorise.DataGrid
 
 @rendermode InteractiveServer
 @inject NavigationManager navigationManager
 @inject UserService _userService
+@inject OrderService _orderService
 @inject NotificationService NotificationService
 
 
@@ -45,14 +47,42 @@
             <Button Color="Color.Danger" @onclick="() => ShowDeleteConfirm()">Delete User</Button>
         </div>
     </div>
-</div>
+    <div class="accordion accordion-flush pt-2">
+
+        @foreach (var order in orders)
+        {
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed row" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-@order.OrderNumber" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <div class="col"><strong>Order Number: </strong>@order.OrderNumber.ToString()</div>
+                        <div class="col"><strong>Order Date: </strong>@order.OrderDate</div>
+                </button>
+            </h2>
+            @foreach (var item in order.OrderItems)
+            {
+                <div id="flush-collapse-@order.OrderNumber" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        @item.ProductId
+                        @item.ProductName
+                        @item.Price
+                    </div>
+                </div>
+            }
+            </div>
+        }
+
+        </div>
+    </div>
 
 
 
 @code {
     [Parameter]
     public string? UserId { get; set; }
+    private List<OrderModel> orders = new List<OrderModel>();
+    private List<OrderItemDto> orderItem = new List<OrderItemDto>();
     private UserModel user = new UserModel();
+    private OrderModel order = new OrderModel();
     private ConfirmPopup? confirmPopup;
     public string? alertMessage;
     protected override async Task OnInitializedAsync()
@@ -61,8 +91,10 @@
         if(UserId != null)
         {
             user = await _userService.GetOneUserAsync(UserId);
-        }
+            orders = await _orderService.GetOrderByUserId(user.Id);
+           
 
+        }
     }
 
     private async Task UpdateEmail()
