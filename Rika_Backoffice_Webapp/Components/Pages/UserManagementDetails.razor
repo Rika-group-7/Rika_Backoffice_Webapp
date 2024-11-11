@@ -55,19 +55,30 @@
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed row" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-@order.OrderNumber" aria-expanded="false" aria-controls="flush-collapseOne">
                         <div class="col"><strong>Order Number: </strong>@order.OrderNumber.ToString()</div>
-                        <div class="col"><strong>Order Date: </strong>@order.OrderDate</div>
+                        <div class="col"><strong>Order Date & Time: </strong>@order.OrderDate</div>
                 </button>
             </h2>
+                <div id="flush-collapse-@order.OrderNumber" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body row border-bottom">
+                        <h6 class="col-2">Product Id</h6>
+                        <h6 class="col-4">Product Name</h6>
+                        <h6 class="col-4">Price</h6>
+                        <h6 class="col-2">Quantity</h6>
+                    </div>
             @foreach (var item in order.OrderItems)
             {
-                <div id="flush-collapse-@order.OrderNumber" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        @item.ProductId
-                        @item.ProductName
-                        @item.Price
+                    <div class="accordion-body row">
+                        <div class="col-2">@item.ProductId</div>
+                        <div class="col-4">@item.ProductName</div>
+                        <div class="col-4">@item.Price</div>
+                        <div class="col-2">@item.Quantity</div>
+                    </div>
+            }
+                    <div class="accordion-body border-top row justify-content-end">
+                        <h6 class="col-6">Total Amount:</h6>
+                        <p class="col-6">@order.TotalAmount</p>
                     </div>
                 </div>
-            }
             </div>
         }
 
@@ -80,9 +91,7 @@
     [Parameter]
     public string? UserId { get; set; }
     private List<OrderModel> orders = new List<OrderModel>();
-    private List<OrderItemDto> orderItem = new List<OrderItemDto>();
     private UserModel user = new UserModel();
-    private OrderModel order = new OrderModel();
     private ConfirmPopup? confirmPopup;
     public string? alertMessage;
     protected override async Task OnInitializedAsync()
