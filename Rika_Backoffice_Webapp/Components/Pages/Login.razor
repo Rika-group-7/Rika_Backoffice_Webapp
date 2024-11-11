@@ -1,0 +1,160 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text.Json
+@using Rika_Backoffice_Webapp.Services
+@layout LoginLayout
+
+
+
+@inject HttpClient Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
+@inject JwtAuthenticationStateProvider AuthenticationStateProvider
+
+
+
+<PageTitle>Rika Admin Portal - Log in</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Login</h3>
+            <AlertPopup Message="@alertMessage" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Log in with out admin account here</p>
+            <EditForm Model="LoginInput" method="post" OnValidSubmit="LoginUser" FormName="loginForm">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" role="alert" />
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="LoginInput.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="email" class="form-label">Email</label>
+                    <ValidationMessage For="() => LoginInput.Email" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText type="password" @bind-Value="LoginInput.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label for="password" class="form-label">Password</label>
+                    <ValidationMessage For="() => LoginInput.Password" class="text-danger" />
+                </div>
+@*                 <div class="checkbox mb-3">
+                    <label class="form-label">
+                        <InputCheckbox @bind-Value="LoginInput.RememberMe" class="darker-border-checkbox form-check-input" />
+                        Remember me
+                    </label>
+                </div> *@
+                <div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                </div>
+               @* <div>
+                    <p>
+                        <a href="Account/ForgotPassword">Forgot your password?</a>
+                    </p>
+                    <p>
+                        <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
+                    </p>
+                    <p>
+                        <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
+                    </p>
+                </div> *@
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private string? alertMessage;
+
+    [SupplyParameterFromForm]
+    private LoginModel LoginInput { get; set; } = new();
+    private string jwtToken;
+
+
+    public async Task LoginUser()
+    {
+        var response = await Http.PostAsJsonAsync("https://rika-authenticationprovider-drfta9bhdaf0g0dr.westeurope-01.azurewebsites.net/api/Auth/signin", LoginInput);
+        if (response.IsSuccessStatusCode)
+        {
+            var tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            jwtToken = tokenResponse.Token;
+            Console.WriteLine(jwtToken);
+
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                var claims = AuthenticationStateProvider.ParseClaimsFromJwt(jwtToken); //Hämtar claims från jwttoken
+                var isAdminClaim = claims.FirstOrDefault(c => c.Type == "isAdmin"); //Söker efter isAdmin
+
+                if (isAdminClaim != null && bool.TryParse(isAdminClaim.Value, out bool isAdmin) && isAdmin) //Om den hittar is Admin
+                {
+                    AuthenticationStateProvider.MarkUserAsAuthenticated(jwtToken); //Markerar som authentiserad
+
+                    var cookieOptions = new CookieOptions //token skapas
+                        {
+                            HttpOnly = true,
+                            Secure = true,
+                            Expires = DateTimeOffset.UtcNow.AddDays(20)
+                        };
+
+                    HttpContextAccessor.HttpContext?.Response.Cookies.Append("Identity-token", jwtToken, cookieOptions); //Lägger till cookie i webbläsare(?)
+                    NavigationManager.NavigateTo("/"); 
+                }
+                else
+                {
+                    alertMessage = "Error: Access denied. Admin privileges required.";
+                }
+            }
+        }
+        else
+        {
+            alertMessage = "Error: Login failed. User does not exist.";
+        }
+    }
+
+
+    private sealed class LoginModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+
+    public class TokenResponse
+    {
+        
+        public string Token { get; set; } 
+    }
+
+    public async Task AuthorizedEndpointWithToken(string jwtToken) //Denna funktion används ej!
+    {
+        // Skapa en ny HttpRequestMessage för GET-förfrågan
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://rika-authenticationprovider-drfta9bhdaf0g0dr.westeurope-01.azurewebsites.net/api/Auth/test");
+
+        // Lägg till JWT-token i Authorization-headern
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken);
+
+        // Skicka förfrågan och få svar
+        var response = await Http.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            //alertMessage = "Authorization successful!";
+            Console.WriteLine("auth successfull!");
+        }
+        else
+        {
+            //alertMessage = "Authorization failed. Please check your token.";
+            Console.WriteLine("auth failed!");
+        }
+    }
+
+}

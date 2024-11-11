@@ -1,5 +1,11 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Net.Http.Headers
 @rendermode InteractiveServer
+
+@inject HttpClient Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
 
@@ -32,7 +38,10 @@
         <button onclick="navigateTo('user-management')">Gå till Användarhantering</button>
     </section>
 
-    
-
-</main>
+     <AuthorizeView>
+        <Authorized>
+            <button>Hemlig knapp här!</button>
+        </Authorized>
+    </AuthorizeView>
+    </main>
 </div>

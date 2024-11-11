@@ -1,0 +1,64 @@
+﻿@rendermode InteractiveServer
+@using Blazorise
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>@ModalTitle</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            @ModalMessage
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@CloseModal">Cancel</Button>
+            <Button Color="@(IsDelete ? Color.Danger : Color.Primary)" Clicked="@ConfirmAction">@ModalBtnText</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    private bool IsDelete;
+    private string ModalMessage { get; set; } = "You cannot undo these changes";
+    private string ModalBtnText { get; set; } = "Confirm";
+    private string ModalTitle { get; set; } = "Are you sure?";
+    private Modal modalRef;
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+    [Parameter]
+    public EventCallback OnUpdate { get; set; }
+
+    public Task ShowModal(bool isDelete, string title, string message, string btnText)
+    {
+        ModalTitle = title;
+        IsDelete = isDelete;
+        ModalMessage = message;
+        ModalBtnText = btnText;
+        return modalRef.Show();
+    }
+
+    private Task CloseModal()
+    {
+
+        return modalRef.Hide();
+    }
+
+    private async Task ConfirmAction()
+    {
+        await CloseModal();
+        if (IsDelete == true)
+        {
+            if (OnDelete.HasDelegate)
+            {
+                await OnDelete.InvokeAsync();
+            }
+        }
+        else
+        {
+            if (OnUpdate.HasDelegate)
+            {
+                await OnUpdate.InvokeAsync();
+            }
+        }
+    }
+
+}
