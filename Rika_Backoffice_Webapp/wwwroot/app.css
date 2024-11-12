@@ -171,6 +171,14 @@ main {
             background-color: #45a049;
         }
 
+.validation-message {
+    min-height: 1.5rem;
+}
+.validation-message-content {
+    display: block;
+}
+
+    
 
 @media (max-width: 768px) {
     .menu-toggle {
