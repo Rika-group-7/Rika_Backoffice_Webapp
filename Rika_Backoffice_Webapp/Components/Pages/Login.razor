@@ -14,7 +14,7 @@
 <div class="row">
     <div class="col">
         <h3>Login</h3>
-        <AlertPopup Message="@alertMessage" />
+        <AlertPopup />
     </div>
 </div>
 <div class="row">
@@ -80,12 +80,14 @@
                 else
                 {
                     alertMessage = "Error: Access denied. Admin privileges required.";
+                    _notificationService.Call("Access denied. Admin privileges required", "Danger");
                 }
             }
         }
         else
         {
             alertMessage = "Error: Login failed. User does not exist.";
+            _notificationService.Call("Login failed. User does not exist.", "Danger");
         }
     }
 

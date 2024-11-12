@@ -6,26 +6,33 @@
 
 @rendermode InteractiveServer
 @inject UserService _userService
-@inject NotificationService _notificationService
+@* @inject NotificationService _notificationService *@
 
 <PageTitle>Customer Management</PageTitle>
-<h3>Customer Management</h3>
-<div class="card shadow-sm pt-2">
-    <AlertPopup Message="@_notificationService.Message" />
-
-    @if(Users == null)
+<h3 class="text-center">Customer Management</h3>
+<div class="row justify-content-center">
+    
+    @if (Users == null || !(Users.Count > 0))
     {
-        <p>Loading...</p>
+        <div class="col-auto mt-5">
+            <div class="spinner-border text-primary" style="width: 6rem; height: 6rem;">
+                <p class="visually-hidden">Loading...</p>
+            </div>
+        </div>
     }
     else
     {
-        <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
-            <DataGridColumns>
-                <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.FirstName)" Caption="First Name" Sortable="true" />
-                <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.LastName)" Caption="Last Name" Sortable="true" />
-                <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Email)" Caption="Email" Sortable="true" />
-            </DataGridColumns>
-        </DataGrid>
+        <div class="col col-md-8">
+            <div class="card shadow-sm p-4">
+                <DataGrid TItem="UserModel" Data="@Users" Sortable="true" Filterable="true" Responsive="true" Hoverable="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
+                    <DataGridColumns>
+                        <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.FirstName)" Caption="First Name" Sortable="true" />
+                        <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.LastName)" Caption="Last Name" Sortable="true" />
+                        <DataGridColumn TItem="UserModel" Field="@nameof(UserModel.Email)" Caption="Email" Sortable="true" />
+                    </DataGridColumns>
+                </DataGrid>
+            </div>
+        </div>
     }
 </div>
 

@@ -5,10 +5,10 @@
 @using System.Diagnostics
 
 @inject ProductService _productService
-@inject NotificationService _notificationService
+@* @inject NotificationService _notificationService *@
 
 
-<AlertPopup Message="@alertMessage" />
+@* <AlertPopup Message="@alertMessage" /> *@
 
 
 <div class="container d-flex justify-content-center align-items-center">
@@ -208,7 +208,7 @@
 
         if (response != null)
         {
-            _notificationService.Message = "Product was successfully updated";
+            _notificationService.Call("Product was successfully updated", "Success");
             _navigationManager.NavigateTo("/products");
         }
     }

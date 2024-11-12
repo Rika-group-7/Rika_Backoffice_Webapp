@@ -6,13 +6,13 @@
 @using Blazorise.Bootstrap
 
 @inject ProductService _productService
-@inject NotificationService _notificationService
+@* @inject NotificationService _notificationService *@
 
 <PageTitle>Product Details</PageTitle>
 
 <ConfirmPopup @ref="confirmPopup" OnDelete="DeleteProduct" />
 
-<AlertPopup Message="@alertMessage" />
+@* <AlertPopup Message="@alertMessage" /> *@
 
 <h3>Product Details</h3>
 
@@ -120,7 +120,8 @@
         if (ProductId != null)
         {
             await _productService.DeleteProduct(ProductId);
-            _notificationService.Message = "Product was successfully Deleted";
+            // _notificationService.Message = "Product was successfully Deleted";
+            _notificationService.Call("Product was successfully deleted", "Success");
             _navigationManager.NavigateTo("/products");
         }
         else

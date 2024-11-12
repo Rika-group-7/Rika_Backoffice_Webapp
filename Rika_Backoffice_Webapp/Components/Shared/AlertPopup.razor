@@ -1,31 +1,20 @@
 ﻿@if (!string.IsNullOrEmpty(DisplayMessage))
 {
-    var alertMessageClass = DisplayMessage.StartsWith("Error") ? "danger" : "success";
-    <div class="alert alert-@alertMessageClass" role="alert">
+    <div class="shadow alert alert-dismissible alert-@AlertType?.ToLower()" role="alert">
         @DisplayMessage
+        <button type="button" class="btn-close" @onclick="DismissAlert"></button>
     </div>
 }
 
 @code {
-    // private string? messageFromCookie;
 
-    [Parameter]
-    public string? Message { get; set; }
+    private string? DisplayMessage => _notificationService.Message;
+    private string? AlertType => _notificationService.AlertType;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    private void DismissAlert(MouseEventArgs e)
+    {
+        _notificationService.Reset();
+        StateHasChanged();
+    }
 
-    private string? DisplayMessage => Message;
-
-    // private string? DisplayMessage => Message ?? messageFromCookie;
-
-    // protected override void OnInitialized()
-    // {
-    //     messageFromCookie = HttpContext.Request.Cookies[IdentityRedirectManager.StatusCookieName];
-
-    //     if (messageFromCookie is not null)
-    //     {
-    //         HttpContext.Response.Cookies.Delete(IdentityRedirectManager.StatusCookieName);
-    //     }
-    // }
 }

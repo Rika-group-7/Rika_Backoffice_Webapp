@@ -8,7 +8,7 @@
 @rendermode InteractiveServer
 @inject UserService _userService
 @inject OrderService _orderService
-@inject NotificationService _notificationService
+@* @inject NotificationService _notificationService *@
 
 
 <PageTitle>Customer Details</PageTitle>
@@ -20,7 +20,6 @@
 <div class="mt-5">
     <h2 class="mb-4">User Profile</h2>
     <div class="card p-4">
-        <AlertPopup Message="@alertMessage" />
         <div class="form-group row">
             <label class="col-sm-3 col-form-label ">First Name:</label>
             <div class="col-sm-9">
@@ -114,8 +113,9 @@
         if (UserId != null)
         {
             await _userService.UpdateUserAsync(UserId, user);
-            _notificationService.Message = "User was successfully updated";
-            _navigationManager.NavigateTo("/usermanagement" );
+            // _notificationService.Message = "User was successfully updated";
+            _notificationService.Call("User was successfully updated", "Success");
+            _navigationManager.NavigateTo("/customers" );
         }
         else{
             alertMessage = "User not found";
@@ -128,8 +128,9 @@
         if(UserId != null)
         {
             await _userService.DeleteUserAsync(UserId);
-            _notificationService.Message = "User was successfully Deleted";
-            _navigationManager.NavigateTo("/usermanagement");
+            // _notificationService.Message = "User was successfully Deleted";
+            _notificationService.Call("User was successfully deleted", "Success");
+            _navigationManager.NavigateTo("/customers");
         }
         else
         {
