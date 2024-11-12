@@ -4,26 +4,25 @@
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
 @rendermode InteractiveServer
+
 @inject ProductService _productService
+@inject NotificationService _notificationService
 
 <PageTitle>Products</PageTitle>
 
-<h3>Products Management</h3>
-<div>
+<AlertPopup Message="@_notificationService.Message" />
+
+<div class="container mt-5"
     <div class="products-title">
-        <h5>Please select one option</h5>
-    </div>
-    <div class="products-buttons">
-        <a href="/products/create" class="btn">Create new product</a>
-        <a href="/products/update" class="btn">Update product</a>
-        <a href="/products/getone" class="btn">Find one product</a>
-        <a href="/products/getall" class="btn">Find all products</a>
-        <a href="/products/delete" class="btn">Delete one product</a>
+        <h3>Products Management</h3>
     </div>
 </div>
 
 <div class="container card shadow-sm">
-    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Responsive="true" ShowPager="true" PageSize="10">
+    <div class="products-buttons">
+        <a href="/products/create" class="btn btn-primary mt-3 mb-2 ms-2">Create new product</a>
+    </div>
+    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Hoverable="true" Responsive="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
         <DataGridColumns>
             <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
             <DataGridColumn TItem="Product" Field="@nameof(Product.Title)" Caption="Name" Sortable="true" />
@@ -36,44 +35,12 @@
 
 
 @code {
-    // public class Product
-    // {
-    //     public Guid Id { get; set; } = Guid.NewGuid();
-    //     public string Name { get; set; } = null!;
-    //     public string Description { get; set; } = null!;
-    //     public double Price { get; set; }
-    // }
-
-    // private List<Product> ProductsList = new List<Product>();
 
     private IEnumerable<Product> ProductsList = Enumerable.Empty<Product>();
-
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     var result = new List<Product>();
-    //     for (int i = 1; i <= 100; i++)
-    //     {
-    //         result.Add(new Product
-    //         {
-    //             Name = Faker.Company.Name(),
-    //             Description = Faker.Lorem.Sentence(),
-    //             Price = Faker.RandomNumber.Next(1, 1000)
-    //         });
-    //     }
-    //     ProductsList = result;
-
-
-    // }
-
-    // private GraphQL.GraphQLResponse<GetAllProductsRequest>? ProductsData;
 
     private async Task FetchProducts()
     {
         ProductsList = await _productService.GetProductsAsync();
-        // if (ProductsData != null)
-        // {
-        //     ProductsList = ProductsData.AsEnumerable();
-        // }
     }
 
     protected override async Task OnInitializedAsync()
@@ -81,4 +48,14 @@
         await FetchProducts();
     }
 
+    private void RowClicked(DataGridRowMouseEventArgs<Product> e)
+    {
+        var productId = e.Item.Id;
+        _navigationManager.NavigateTo($"/products/{productId}");
+    }
+
+    private Cursor HoverCursor(Product product)
+    {
+        return Blazorise.Cursor.Pointer;
+    }
 }

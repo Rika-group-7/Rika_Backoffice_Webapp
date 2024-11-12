@@ -1,11 +1,11 @@
-﻿@page "/usermanagement";
+﻿@page "/users";
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
 @using Blazorise
 @using Blazorise.DataGrid
+
 @rendermode InteractiveServer
 @inject UserService _userService
-@inject NavigationManager _navigationManager
 @inject NotificationService _notificationService
 
 <PageTitle>User Management </PageTitle>
@@ -40,7 +40,7 @@
     private void RowClicked(DataGridRowMouseEventArgs<UserModel> e)
     {
         var userId = e.Item.Id;
-        _navigationManager.NavigateTo($"/user/{userId}");
+        _navigationManager.NavigateTo($"/users/{userId}");
     }
 
     private Cursor HoverCursor(UserModel user)

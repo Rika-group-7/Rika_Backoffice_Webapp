@@ -1,4 +1,6 @@
-﻿namespace Rika_Backoffice_Webapp.Models;
+﻿using Newtonsoft.Json;
+
+namespace Rika_Backoffice_Webapp.Models;
 
 public class ProductCreateRequest
 {
@@ -19,14 +21,12 @@ public class ProductCreateRequest
 
     public class CategoryCreateRequest
     {
-        public string? Id { get; set; }
         public string? CategoryName { get; set; }
         public List<CategoryCreateRequest>? SubCategories { get; set; } = new();
     }
 
     public class MaterialCreateRequest
     {
-        public string? Id { get; set; }
         public string? MaterialName { get; set; }
     }
 }

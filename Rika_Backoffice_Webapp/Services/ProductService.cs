@@ -18,43 +18,12 @@ public class ProductService
         Query = "query { getProducts { id title brand size color price description stockStatus sku ratings productImage categories { categoryName subCategories { categoryName } } materials { materialName } } }"
     };
 
-    private readonly GraphQLRequest _getProductById = new GraphQLRequest
-    {
-        Query = @"
-            query ($id: ID!) {
-                getProductsById(id: $id) {
-                    id
-                    title
-                    brand
-                    size
-                    color
-                    price
-                    description
-                    stockStatus
-                    sku
-                    ratings
-                    productImage
-                    categories {
-                        categoryName
-                        subCategories {
-                            categoryName
-                        }
-                    }
-                    materials {
-                        materialName
-                    }
-                }
-            }
-        ",
-        OperationName = "GetProductById"
-    };
-
-    public async Task<GraphQLResponse<GetAllProductsRequest>> GetProducts()
-    {
-        var fetch = await _graphqlClient.SendQueryAsync<GetAllProductsRequest>(_getProducts);
+    //public async Task<GraphQLResponse<GetAllProductsRequest>> GetProducts()
+    //{
+    //    var fetch = await _graphqlClient.SendQueryAsync<GetAllProductsRequest>(_getProducts);
         
-        return fetch;
-    }
+    //    return fetch;
+    //}
 
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
@@ -64,7 +33,7 @@ public class ProductService
     }
 
     //CREATE PRODUCT
-    public async Task CreateProduct(ProductCreateRequest input)
+    public async Task<GraphQLResponse<CreateProductResponseModel>> CreateProduct(ProductCreateRequest input)
     {
         var createProductMutation = new GraphQLRequest
         {
@@ -94,23 +63,54 @@ public class ProductService
                     }
                 }
             }",
-            OperationName = "CreateProduct",
             Variables = new
             {
                 input
             }
         };
-        await _graphqlClient.SendMutationAsync<ProductCreateRequest>(createProductMutation);
+        var response = await _graphqlClient.SendMutationAsync<CreateProductResponseModel>(createProductMutation);
+        return response;
     }
 
-    public async Task<GraphQLResponse<Product>> GetProductById(string id)
+    //GET PRODUCT BY ID
+    
+    public async Task<GraphQLResponse<GetProductResponseModel>> GetProductByIdAsync(string id)
     {
-        var fetch = await _graphqlClient.SendQueryAsync<Product>(_getProductById);
-
-        return fetch;
+        var GetProductByIdQuery = new GraphQLRequest
+        {
+            Query = @"
+            query ($id: String!) {
+                getProductById(id: $id) {
+                    id
+                    title
+                    brand
+                    size
+                    color
+                    price
+                    description
+                    stockStatus
+                    sku
+                    ratings
+                    productImage
+                    categories {
+                        categoryName
+                        subCategories {
+                            categoryName
+                        }
+                    }
+                    materials {
+                        materialName
+                    }
+                }
+            }
+            ",
+            Variables = new { id }
+        };
+        return await _graphqlClient.SendQueryAsync<GetProductResponseModel>(GetProductByIdQuery);
     }
 
-    public async Task UpdateProduct(ProductUpdateRequest input)
+    //UPDATE PRODUCT
+    public async Task<GraphQLResponse<ProductUpdateRequest>> UpdateProduct(ProductUpdateRequest input)
     {
         var updateProudctMutaion = new GraphQLRequest
         {
@@ -139,16 +139,16 @@ public class ProductService
                     }
                 }
             }",
-            OperationName = "UpdateProduct",
             Variables = new
             {
                 input
             }
         };
-        await _graphqlClient.SendMutationAsync<ProductUpdateRequest>(updateProudctMutaion);
+        return await _graphqlClient.SendMutationAsync<ProductUpdateRequest>(updateProudctMutaion);
     }
 
-    public async Task DeleteProduct(string id)
+    //DELETE PRODUCT
+    public async Task<GraphQLResponse<DeleteProductResponseModel>> DeleteProduct(string id)
     {
         var deleteProductMutation = new GraphQLRequest
         {
@@ -162,6 +162,7 @@ public class ProductService
                 id
             }
         };
-        await _graphqlClient.SendMutationAsync<string>(deleteProductMutation);
+
+        return await _graphqlClient.SendMutationAsync<DeleteProductResponseModel>(deleteProductMutation);
     }
 }
