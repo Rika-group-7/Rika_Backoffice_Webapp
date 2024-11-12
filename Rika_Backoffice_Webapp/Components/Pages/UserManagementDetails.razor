@@ -1,4 +1,4 @@
-﻿@page "/user/{UserId}"
+﻿@page "/users/{UserId}"
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
 @using Blazorise
@@ -6,7 +6,6 @@
 @using Blazorise.DataGrid
 
 @rendermode InteractiveServer
-@inject NavigationManager _navigationManager
 @inject UserService _userService
 @inject OrderService _orderService
 @inject NotificationService _notificationService

@@ -6,7 +6,6 @@
 @rendermode InteractiveServer
 
 @inject ProductService _productService
-@inject NavigationManager _navigationManager
 @inject NotificationService _notificationService
 
 <PageTitle>Products</PageTitle>
@@ -36,44 +35,12 @@
 
 
 @code {
-    // public class Product
-    // {
-    //     public Guid Id { get; set; } = Guid.NewGuid();
-    //     public string Name { get; set; } = null!;
-    //     public string Description { get; set; } = null!;
-    //     public double Price { get; set; }
-    // }
-
-    // private List<Product> ProductsList = new List<Product>();
 
     private IEnumerable<Product> ProductsList = Enumerable.Empty<Product>();
-
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     var result = new List<Product>();
-    //     for (int i = 1; i <= 100; i++)
-    //     {
-    //         result.Add(new Product
-    //         {
-    //             Name = Faker.Company.Name(),
-    //             Description = Faker.Lorem.Sentence(),
-    //             Price = Faker.RandomNumber.Next(1, 1000)
-    //         });
-    //     }
-    //     ProductsList = result;
-
-
-    // }
-
-    // private GraphQL.GraphQLResponse<GetAllProductsRequest>? ProductsData;
 
     private async Task FetchProducts()
     {
         ProductsList = await _productService.GetProductsAsync();
-        // if (ProductsData != null)
-        // {
-        //     ProductsList = ProductsData.AsEnumerable();
-        // }
     }
 
     protected override async Task OnInitializedAsync()

@@ -5,7 +5,6 @@
 
 @inject HttpClient Http
 @inject IHttpContextAccessor HttpContextAccessor
-@inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
 
@@ -17,12 +16,12 @@
     <aside class="sidebar" id="sidebar">
         <nav>
             <ul>
-                <li><a href="/usermanagement"><i class="fas fa-users"></i> Användarhantering</a></li>
-                <li><a href="/order-management"><i class="fas fa-box"></i> Orderhantering</a></li>
-                <li><a href="/products"><i class="fas fa-box-open"></i> Produktkatalog</a></li>
-                <li><a href="/reports"><i class="fas fa-chart-line"></i> Rapporter & Statistik</a></li>
-                <li><a href="/settings"><i class="fas fa-cogs"></i> Inställningar</a></li>
-                <li><a href="/support"><i class="fas fa-life-ring"></i> Support & Hjälp</a></li>
+                <li><NavLink href="/users" Match="NavLinkMatch.All"><i class="fas fa-users"></i> Användarhantering</NavLink></li>
+                <li><NavLink href="/order-management" Match="NavLinkMatch.All"><i class="fas fa-box"></i> Orderhantering</NavLink></li>
+                <li><NavLink href="/products" Match="NavLinkMatch.All"><i class="fas fa-box-open"></i> Produktkatalog</NavLink></li>
+                <li><NavLink href="/reports" Match="NavLinkMatch.All"><i class="fas fa-chart-line"></i> Rapporter & Statistik</NavLink></li>
+                <li><NavLink href="/settings" Match="NavLinkMatch.All"><i class="fas fa-cogs"></i> Inställningar</NavLink></li>
+                <li><NavLink href="/support" Match="NavLinkMatch.All"><i class="fas fa-life-ring"></i> Support & Hjälp</NavLink></li>
             </ul>
         </nav>
     </aside>
@@ -32,10 +31,5 @@
             <p>Hantera användarkonton och behörigheter.</p>
             <button onclick="navigateTo('user-management')">Gå till Användarhantering</button>
         </section>
-         <AuthorizeView>
-            <Authorized>
-                <button>Hemlig knapp här!</button>
-            </Authorized>
-        </AuthorizeView>
     </main>
 </div>
