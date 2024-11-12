@@ -1,4 +1,4 @@
-﻿@page "/users";
+﻿@page "/customers";
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
 @using Blazorise
@@ -8,8 +8,9 @@
 @inject UserService _userService
 @inject NotificationService _notificationService
 
-<PageTitle>User Management </PageTitle>
-<div class="container card shadow-sm pt-2">
+<PageTitle>Customer Management</PageTitle>
+<h3>Customer Management</h3>
+<div class="card shadow-sm pt-2">
     <AlertPopup Message="@_notificationService.Message" />
 
     @if(Users == null)
@@ -40,7 +41,7 @@
     private void RowClicked(DataGridRowMouseEventArgs<UserModel> e)
     {
         var userId = e.Item.Id;
-        _navigationManager.NavigateTo($"/users/{userId}");
+        _navigationManager.NavigateTo($"/customers/{userId}");
     }
 
     private Cursor HoverCursor(UserModel user)

@@ -2,8 +2,15 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inherits LayoutComponentBase
 @attribute [Authorize]
+@attribute [StreamRendering(true)]
 
-@Body
+<HeaderPartial />
+<MainNavPartial />
+<main>
+    <div class="container-fluid">
+        @Body
+    </div>
+</main>
 
 <!--<div id="blazor-error-ui">
     An unhandled error has occurred.

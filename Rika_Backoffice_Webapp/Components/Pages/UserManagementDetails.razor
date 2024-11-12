@@ -1,4 +1,4 @@
-﻿@page "/users/{UserId}"
+﻿@page "/customers/{UserId}"
 @using Rika_Backoffice_Webapp.Models
 @using Rika_Backoffice_Webapp.Services
 @using Blazorise
@@ -11,9 +11,13 @@
 @inject NotificationService _notificationService
 
 
+<PageTitle>Customer Details</PageTitle>
+
 <ConfirmPopup @ref="confirmPopup" OnDelete="DeleteUser" OnUpdate="UpdateEmail" />
 
-<div class="container mt-5">
+<h3>Customer Details</h3>
+
+<div class="mt-5">
     <h2 class="mb-4">User Profile</h2>
     <div class="card p-4">
         <AlertPopup Message="@alertMessage" />
