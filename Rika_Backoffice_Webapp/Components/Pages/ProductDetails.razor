@@ -6,87 +6,90 @@
 @using Blazorise.Bootstrap
 
 @inject ProductService _productService
-@inject NotificationService _notificationService
+@* @inject NotificationService _notificationService *@
+
+<PageTitle>Product Details</PageTitle>
 
 <ConfirmPopup @ref="confirmPopup" OnDelete="DeleteProduct" />
 
-<div class="container-fluid">
-    <AlertPopup Message="@alertMessage" />
-    <div class="row mt-2">
-        <div class="product-image col-4">
-            <img src="@product.ProductImage" alt="Product Image" />
-        </div>
-        <div class="product-body col-6 ms-4">
-            <h4>@product.Title</h4>
-            <p>@product.Description</p>
-            <p>Price: @product.Price €</p>
-            <div>
-                <p>
-                    Categories:
-                    @if (product.Categories != null)
-                    {
-                        @foreach (var category in product.Categories.Select((value, index) => (value, index)))
-                        {
-                            var value = category.value;
-                            var index = category.index;
+@* <AlertPopup Message="@alertMessage" /> *@
 
+<h3>Product Details</h3>
 
-                            @if (index < product.Categories.Count - 1)
-                            {
-                                @(value.CategoryName + ", ")
-                            }
-                            else
-                            {
-                                @value.CategoryName
-                            }
-                        }
-                    }
-                </p>
-
-            </div>
-            <div>
-                <p>
-                    Materials:
-                    @if (product.Materials != null)
-                    {
-                        @foreach (var category in product.Materials.Select((value, index) => (value, index)))
-                        {
-                            var value = category.value;
-                            var index = category.index;
-
-
-                            @if (index < product.Materials.Count - 1)
-                            {
-                                @(value.MaterialName + ", ")
-                            }
-                            else
-                            {
-                                @value.MaterialName
-                            }
-                        }
-                    }
-                </p>
-            </div>
-            <p>Brand: @product.Brand</p>
-            <p>Size: @product.Size</p>
-            <p>Color: @product.Color</p>
-            <p>Article no: @product.SKU</p>
-            <p>Rating avg: @product.Ratings</p>
-            @if (product.StockStatus == true)
-            {
-                <p>In Stock: Yes</p>
-            }
-            else
-            {
-                <p>In Stock: No</p>
-            }
-
-        </div>
+<div class="row mt-2">
+    <div class="product-image col-4">
+        <img class="img-fluid" src="@product.ProductImage" alt="Product Image" />
     </div>
-    <a href="/products" class="btn btn-secondary">Back to Products</a>
-    <a href=@($"/products/update/{ProductId}") class="btn btn-primary">Update Product</a>
-    <Button Color="Color.Danger" @onclick="() => ShowDeleteConfirm()">Delete Product</Button>
+    <div class="product-body col-6 ms-4">
+        <h4>@product.Title</h4>
+        <p>@product.Description</p>
+        <p>Price: @product.Price €</p>
+        <div>
+            <p>
+                Categories:
+                @if (product.Categories != null)
+                {
+                    @foreach (var category in product.Categories.Select((value, index) => (value, index)))
+                    {
+                        var value = category.value;
+                        var index = category.index;
+
+
+                        @if (index < product.Categories.Count - 1)
+                        {
+                            @(value.CategoryName + ", ")
+                        }
+                        else
+                        {
+                            @value.CategoryName
+                        }
+                    }
+                }
+            </p>
+
+        </div>
+        <div>
+            <p>
+                Materials:
+                @if (product.Materials != null)
+                {
+                    @foreach (var category in product.Materials.Select((value, index) => (value, index)))
+                    {
+                        var value = category.value;
+                        var index = category.index;
+
+
+                        @if (index < product.Materials.Count - 1)
+                        {
+                            @(value.MaterialName + ", ")
+                        }
+                        else
+                        {
+                            @value.MaterialName
+                        }
+                    }
+                }
+            </p>
+        </div>
+        <p>Brand: @product.Brand</p>
+        <p>Size: @product.Size</p>
+        <p>Color: @product.Color</p>
+        <p>Article no: @product.SKU</p>
+        <p>Rating avg: @product.Ratings</p>
+        @if (product.StockStatus == true)
+        {
+            <p>In Stock: Yes</p>
+        }
+        else
+        {
+            <p>In Stock: No</p>
+        }
+
+    </div>
 </div>
+<a href="/products" class="btn btn-secondary">Back to Products</a>
+<a href=@($"/products/update/{ProductId}") class="btn btn-primary">Update Product</a>
+<Button Color="Color.Danger" @onclick="() => ShowDeleteConfirm()">Delete Product</Button>
 
 @code {
 
@@ -117,7 +120,8 @@
         if (ProductId != null)
         {
             await _productService.DeleteProduct(ProductId);
-            _notificationService.Message = "Product was successfully Deleted";
+            // _notificationService.Message = "Product was successfully Deleted";
+            _notificationService.Call("Product was successfully deleted", "Success");
             _navigationManager.NavigateTo("/products");
         }
         else

@@ -11,34 +11,32 @@
 
 <PageTitle>Rika Admin Portal - Log in</PageTitle>
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h3>Login</h3>
-            <AlertPopup Message="@alertMessage" />
-        </div>
+<div class="row">
+    <div class="col">
+        <h3>Login</h3>
+        <AlertPopup />
     </div>
-    <div class="row">
-        <div class="col">
-            <p>Log in with out admin account here</p>
-            <EditForm Model="LoginInput" method="post" OnValidSubmit="LoginUser" FormName="loginForm">
-                <DataAnnotationsValidator />
-                <ValidationSummary class="text-danger" role="alert" />
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="LoginInput.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label for="email" class="form-label">Email</label>
-                    <ValidationMessage For="() => LoginInput.Email" class="text-danger" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="LoginInput.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label for="password" class="form-label">Password</label>
-                    <ValidationMessage For="() => LoginInput.Password" class="text-danger" />
-                </div>
-                <div>
-                    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-            </EditForm>
-        </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>Log in with your admin account here</p>
+        <EditForm Model="LoginInput" method="post" OnValidSubmit="LoginUser" FormName="loginForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert" />
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="LoginInput.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label for="email" class="form-label">Email</label>
+                <ValidationMessage For="() => LoginInput.Email" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText type="password" @bind-Value="LoginInput.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                <label for="password" class="form-label">Password</label>
+                <ValidationMessage For="() => LoginInput.Password" class="text-danger" />
+            </div>
+            <div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+            </div>
+        </EditForm>
     </div>
 </div>
 
@@ -82,12 +80,14 @@
                 else
                 {
                     alertMessage = "Error: Access denied. Admin privileges required.";
+                    _notificationService.Call("Access denied. Admin privileges required", "Danger");
                 }
             }
         }
         else
         {
             alertMessage = "Error: Login failed. User does not exist.";
+            _notificationService.Call("Login failed. User does not exist.", "Danger");
         }
     }
 
