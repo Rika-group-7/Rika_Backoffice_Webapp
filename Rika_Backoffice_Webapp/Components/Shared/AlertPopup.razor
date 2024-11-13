@@ -1,4 +1,5 @@
-﻿
+﻿@using Rika_Backoffice_Webapp.Components.Layout
+
 <div class="shadow alert alert-dismissible alert-@AlertType?.ToLower()" role="alert">
     @DisplayMessage
     <button type="button" class="btn-close" @onclick="DismissAlert"></button>
@@ -12,7 +13,6 @@
     private void DismissAlert(MouseEventArgs e)
     {
         _notificationService.Reset();
-        StateHasChanged();
     }
 
 }

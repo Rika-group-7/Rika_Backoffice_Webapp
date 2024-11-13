@@ -15,78 +15,89 @@
 
 <ConfirmPopup @ref="confirmPopup" OnDelete="DeleteUser" OnUpdate="UpdateEmail" />
 
-<h3>Customer Details</h3>
-
-<div class="mt-5">
-    <h2 class="mb-4">User Profile</h2>
-    <div class="card p-4">
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label ">First Name:</label>
-            <div class="col-sm-9">
-                <p class="form-control-plaintext">@user.FirstName</p>
+<h3 class="text-center">Customer Profile</h3>
+<div class="row justify-content-center">
+    @if (user == null || user.Id == null)
+    {
+        <div class="col-auto mt-5">
+            <div class="spinner-border text-primary" style="width: 6rem; height: 6rem;">
+                <p class="visually-hidden">Loading...</p>
             </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Last Name:</label>
-            <div class="col-sm-9">
-                <p class="form-control-plaintext">@user.LastName</p>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Email Address:</label>
-            <div class="col-sm-9">
-                <input type="email" class="form-control" @bind="user.Email" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">User ID:</label>
-            <div class="col-sm-9">
-                <p class="form-control-plaintext">@user.Id</p>
-            </div>
-        </div>
-        <div class="text-right mt-3">
-            <Button Color="Color.Primary" @onclick="() => ShowUpdateConfirm()">Save Changes</Button>
-            <Button Color="Color.Danger" @onclick="() => ShowDeleteConfirm()">Delete User</Button>
-        </div>
-    </div>
-    <div class="accordion accordion-flush pt-2">
-
-        @foreach (var order in orders)
-        {
-            <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed row" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-@order.OrderNumber" aria-expanded="false" aria-controls="flush-collapseOne">
-                        <div class="col"><strong>Order Number: </strong>@order.OrderNumber.ToString()</div>
-                        <div class="col"><strong>Order Date & Time: </strong>@order.OrderDate</div>
-                </button>
-            </h2>
-                <div id="flush-collapse-@order.OrderNumber" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body row border-bottom">
-                        <h6 class="col-2">Product Id</h6>
-                        <h6 class="col-4">Product Name</h6>
-                        <h6 class="col-4">Price</h6>
-                        <h6 class="col-2">Quantity</h6>
-                    </div>
-            @foreach (var item in order.OrderItems)
-            {
-                    <div class="accordion-body row">
-                        <div class="col-2">@item.ProductId</div>
-                        <div class="col-4">@item.ProductName</div>
-                        <div class="col-4">@item.Price</div>
-                        <div class="col-2">@item.Quantity</div>
-                    </div>
-            }
-                    <div class="accordion-body border-top row justify-content-end">
-                        <h6 class="col-6">Total Amount:</h6>
-                        <p class="col-6">@order.TotalAmount</p>
+    }
+    else
+    {
+        <div class="col col-md-8">
+            <div class="card p-4">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label ">First Name:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext">@user.FirstName</p>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Last Name:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext">@user.LastName</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Email Address:</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" @bind="user.Email" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">User ID:</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext">@user.Id</p>
+                    </div>
+                </div>
+                <div class="text-right mt-3">
+                    <a href="/customers" class="btn btn-secondary">Back to Customers</a>
+                    <Button Color="Color.Primary" @onclick="() => ShowUpdateConfirm()">Save Changes</Button>
+                    <Button Color="Color.Danger" @onclick="() => ShowDeleteConfirm()">Delete User</Button>
+                </div>
             </div>
-        }
+            <div class="accordion accordion-flush pt-2">
 
+                @foreach (var order in orders)
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed row" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-@order.OrderNumber" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <div class="col"><strong>Order Number: </strong>@order.OrderNumber.ToString()</div>
+                                <div class="col"><strong>Order Date & Time: </strong>@order.OrderDate</div>
+                            </button>
+                        </h2>
+                        <div id="flush-collapse-@order.OrderNumber" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body row border-bottom">
+                                <h6 class="col-2">Product Id</h6>
+                                <h6 class="col-4">Product Name</h6>
+                                <h6 class="col-4">Price</h6>
+                                <h6 class="col-2">Quantity</h6>
+                            </div>
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <div class="accordion-body row">
+                                    <div class="col-2">@item.ProductId</div>
+                                    <div class="col-4">@item.ProductName</div>
+                                    <div class="col-4">@item.Price</div>
+                                    <div class="col-2">@item.Quantity</div>
+                                </div>
+                            }
+                            <div class="accordion-body border-top row justify-content-end">
+                                <h6 class="col-6">Total Amount:</h6>
+                                <p class="col-6">@order.TotalAmount</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
         </div>
-    </div>
-
+    }
+</div>
 
 
 @code {

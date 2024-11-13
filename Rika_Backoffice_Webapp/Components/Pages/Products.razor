@@ -10,22 +10,33 @@
 
 <PageTitle>Products</PageTitle>
 
-<h3>Products Management</h3>
-
-<div class="card shadow-sm">
-    <div class="products-buttons">
-        <a href="/products/create" class="btn btn-primary mt-3 mb-2 ms-2">Create new product</a>
-    </div>
-    <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Hoverable="true" Responsive="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
-        <DataGridColumns>
-            <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
-            <DataGridColumn TItem="Product" Field="@nameof(Product.Title)" Caption="Name" Sortable="true" />
-            <DataGridColumn TItem="Product" Field="@nameof(Product.Description)" Caption="Description" Sortable="true" />
-            <DataGridColumn TItem="Product" Field="@nameof(Product.Price)" Caption="Price" Sortable="true" />
-        </DataGridColumns>
-    </DataGrid>
+<h3 class="text-center">Products Management</h3>
+<div class="row justify-content-center">
+    @if (ProductsList == null || !(ProductsList.Count() > 0))
+    {
+        <div class="spinner-border text-primary" style="width: 6rem; height: 6rem;">
+            <p class="visually-hidden">Loading...</p>
+        </div>
+    }
+    else
+    {
+        <div class="col col-md-8">
+            <div class="card shadow-sm p-4">
+                <div class="products-buttons border-bottom pb-4">
+                    <a href="/products/create" class="btn btn-primary mt-3 mb-2 ms-2">Create new product</a>
+                </div>
+                <DataGrid TItem="Product" Data="@ProductsList" Sortable="true" Filterable="true" Hoverable="true" Responsive="true" ShowPager="true" PageSize="10" RowClicked="RowClicked" RowHoverCursor="@HoverCursor">
+                    <DataGridColumns>
+                        <DataGridColumn TItem="Product" Field="@nameof(Product.Id)" Caption="Id" Sortable="true" />
+                        <DataGridColumn TItem="Product" Field="@nameof(Product.Title)" Caption="Name" Sortable="true" />
+                        <DataGridColumn TItem="Product" Field="@nameof(Product.Description)" Caption="Description" Sortable="true" />
+                        <DataGridColumn TItem="Product" Field="@nameof(Product.Price)" Caption="Price" Sortable="true" />
+                    </DataGridColumns>
+                </DataGrid>
+            </div>
+        </div>
+    }
 </div>
-
 
 
 @code {
