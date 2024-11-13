@@ -13,59 +13,81 @@
 
 <div class="container d-flex justify-content-center align-items-center">
     <div class="col-6 col-md-6 col-lg-8">
-        <EditForm Model="ProductUpdateInput" method="post" OnValidSubmit="SubmitUpdateProduct" FormName="UpdateProductForm">
+        <EditForm class="create-product-form" Model="ProductUpdateInput" method="post" OnValidSubmit="SubmitUpdateProduct" FormName="UpdateProductForm">
 
             <h3 class="ms-1 mb-3 mt-3">Update Product</h3>
 
-            <div class="form-floating mb-3">
+            <DataAnnotationsValidator />
+
+            <div class="form-floating mb-1">
                 <InputText @bind-Value="ProductUpdateInput.Title" class="form-control" placeholder="Product title" />
                 <label class="form-label">Title</label>
-                <ValidationMessage For="() => ProductUpdateInput.Title" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.Title" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <InputText @bind-Value="ProductUpdateInput.Brand" class="form-control" placeholder="Product brand" />
                 <label class="form-label">Brand</label>
-                <ValidationMessage For="() => ProductUpdateInput.Brand" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.Brand" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <InputText @bind-Value="ProductUpdateInput.Size" class="form-control" placeholder="Product size" />
                 <label class="form-label">Size</label>
-                <ValidationMessage For="() => ProductUpdateInput.Size" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.Size" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <InputText @bind-Value="ProductUpdateInput.Color" class="form-control" placeholder="Product color" />
                 <label class="form-label">Color</label>
-                <ValidationMessage For="() => ProductUpdateInput.Color" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.Color" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <InputNumber @bind-Value="ProductUpdateInput.Price" class="form-control" placeholder="Product price" />
                 <label class="form-label">Price</label>
-                <ValidationMessage For="() => ProductUpdateInput.Price" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.Price" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <InputText @bind-Value="ProductUpdateInput.Description" class="form-control" placeholder="Product description" />
                 <label class="form-label">Description</label>
-                <ValidationMessage For="() => ProductUpdateInput.Description" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.Description" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-check mb-3">
+            <div class="form-check mb-1">
                 <InputCheckbox @bind-Value="ProductUpdateInput.StockStatus" class="form-check-input" />
                 <label class="form-check-label">In stock</label>
-                <ValidationMessage For="() => ProductUpdateInput.StockStatus" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.StockStatus" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <InputText @bind-Value="ProductUpdateInput.SKU" class="form-control" placeholder="Product SKU" />
                 <label class="form-label">SKU</label>
-                <ValidationMessage For="() => ProductUpdateInput.SKU" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.SKU" class="text-danger validation-message-content" />
+                </div>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-1">
                 <InputNumber @bind-Value="ProductUpdateInput.Ratings" class="form-control" placeholder="Product rating" />
                 <label class="form-label">Product rating</label>
-                <ValidationMessage For="() => ProductUpdateInput.Ratings" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.Ratings" class="text-danger validation-message-content" />
+                </div>
             </div>
             <div class="form-floating">
                 <InputText @bind-Value="ProductUpdateInput.ProductImage" class="form-control" placeholder="Product image" />
                 <label class="form-label">Image</label>
-                <ValidationMessage For="() => ProductUpdateInput.ProductImage" class="text-danger" />
+                <div class="validation-message">
+                    <ValidationMessage For="() => ProductUpdateInput.ProductImage" class="text-danger validation-message-content" />
+                </div>
             </div>
 
             <hr class="my-4" />
