@@ -4,7 +4,10 @@
 @attribute [Authorize]
 @attribute [StreamRendering(true)]
 
-<AlertPopup />
+ @if (_notificationService.IsActive)
+{
+    <AlertPopup @rendermode="InteractiveServer" />
+}
 
 <HeaderPartial />
 <MainNavPartial />

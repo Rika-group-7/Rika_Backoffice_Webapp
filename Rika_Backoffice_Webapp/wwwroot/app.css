@@ -165,7 +165,7 @@ main {
         padding: 10px 20px;
         border: none;
         border-radius: 50px;
-        background-color: #4CAF50;
+        /*background-color: #4CAF50;*/
         color: white;
         font-weight: bold;
         cursor: pointer;
@@ -174,7 +174,7 @@ main {
     }
 
         .section-card button:hover {
-            background-color: #45a049;
+            /*background-color: #45a049;*/
         }
 
 

@@ -1,10 +1,8 @@
-﻿@if (!string.IsNullOrEmpty(DisplayMessage))
-{
-    <div class="shadow alert alert-dismissible alert-@AlertType?.ToLower()" role="alert">
-        @DisplayMessage
-        <button type="button" class="btn-close" @onclick="DismissAlert"></button>
-    </div>
-}
+﻿
+<div class="shadow alert alert-dismissible alert-@AlertType?.ToLower()" role="alert">
+    @DisplayMessage
+    <button type="button" class="btn-close" @onclick="DismissAlert"></button>
+</div>
 
 @code {
 
